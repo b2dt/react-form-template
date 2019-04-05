@@ -1,0 +1,30 @@
+@import 'util.scss';
+@import 'responsive.scss';
+
+html, body{
+  margin: 0px;
+  padding: 0px;
+}
+
+html, body, #root, #app{
+  width: 100%;
+}
+
+body{
+  div, h1, input, button, textarea, select, option, ul, li{
+    font-family: 'Roboto', sans-serif;
+  }
+}
+
+#root{
+  position: relative;
+  z-index: 1;
+}
+
+#app{
+  background-color: $blue;
+  min-height: 100vh;
+  overflow: auto;
+  position: relative;
+  z-index: 1;
+}
