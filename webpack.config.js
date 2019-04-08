@@ -1,7 +1,6 @@
 const webpack = require('webpack'),
       path = require('path'),
-      HtmlWebpackPlugin = require('html-webpack-plugin'),
-      CopyWebpackPlugin = require('copy-webpack-plugin')
+      HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
   entry: {
@@ -10,12 +9,12 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/, 
-        use: 'babel-loader?cacheDirectory', 
+        test: /\.(js|jsx)$/,
+        use: 'babel-loader?cacheDirectory',
         exclude: [/node_modules/]
       },
       {
-        test: /\.(ts|tsx)?$/, 
+        test: /\.(ts|tsx)?$/,
         loader: 'ts-loader',
         exclude: [/node_modules/]
       },
@@ -27,7 +26,7 @@ const config = {
             options: { minimize: true }
           }
         ]
-      }      
+      }
     ]
   },
   plugins: [],
@@ -43,16 +42,16 @@ config.output = {
 
 config.plugins = [
   new HtmlWebpackPlugin({
-    template: path.resolve(__dirname, 'src/index.html'), 
+    template: path.resolve(__dirname, 'src/index.html'),
     filename: './index.html'
   }),
 ]
 
 config.module.rules.push({
-  test: /\.scss$/, 
+  test: /\.scss$/,
   use: [
-    {loader: 'style-loader'}, 
-    {loader: 'css-loader'}, 
+    {loader: 'style-loader'},
+    {loader: 'css-loader'},
     {loader: 'sass-loader'}
   ]
 })
@@ -66,7 +65,7 @@ config.devServer = {
     "/api": {
       target: `http://localhost:8080`,
       secure: false
-    },    
+    },
     "/login": {
       target: `http://localhost:8080`,
       secure: false
