@@ -26,16 +26,22 @@ export default class App extends React.Component<AppPageProps, any> {
 		const {props} = this
 		const formProps = [
 			{
-				id: "rus-name",
+				id: "rus-first-name",
 				required: true,
 				inputType: InputType.Text,
-				defaultText: "BRONTS",
+				placeholder: "BRONTS",
+				defaultText: "",
 				label: "First Name"
-			},
-			{
+			}, {
+				id: "rus-last-name",
+				required: true,
+				inputType: InputType.Text,
+				label: "Last Name"
+			}, {
 				id: "rus-id",
 				inputType: InputType.Text,
-				defaultText: "tso5912",
+				placeholder: "tso5912",
+				defaultText: "TESTING",
 				label: "User Id"
 			}
 		]

@@ -1,36 +1,36 @@
 import * as React from 'react'
-
-import * as _ from 'lodash'
 import {InputAttributes} from '../../../models/inputAttributes'
 
 export interface InputProps {
 	id?: string
+	index?: number
 	classes?: string
 	label?: string
 	error?: string
 	debounceInput?: boolean
 	debounceAmount?: number
 	inputProps?: InputAttributes
+	
+	updateFormList?: (x: any, y: any) => any
 }
 
 export default class Input extends React.Component<InputProps, any> {
 	constructor(props) {
 		super(props)
+		this.localOnChange = this.localOnChange.bind(this)
+		this.handleNewProps = this.handleNewProps.bind(this)
 		this.state = {
-			fieldVal: ""
+			value: ""
 		}
-		this.debounceOnChangeHandler = this.debounceOnChangeHandler.bind(this)
 	}
 	
-	debounceOnChangeHandler(e) {
-		const {props} = this
+	localOnChange(e) {
+		const value = e.target.value,
+			{props} = this
 		this.setState({
-			fieldVal: e.target.value
+			value: value
 		})
-		
-		if (e.target.onchange == null) {
-			props.debounceInput ? _.debounce(e.target.onChange, props.debounceAmount) : e.target.onchange
-		}
+		this.props.updateFormList(value, props.index)
 	}
 	
 	handleOptional(prop: string, defaultValue: any = null, appendDefaultValue: boolean = false) {
@@ -41,9 +41,24 @@ export default class Input extends React.Component<InputProps, any> {
 		return defaultValue
 	}
 	
+	handleNewProps() {
+		const {props, state} = this,
+			{inputProps} = props
+		return {
+			type: inputProps.type,
+			value: inputProps.value,
+			defaultValue: inputProps.defaultValue,
+			placeholder: inputProps.placeholder,
+			pattern: inputProps.pattern,
+			min: inputProps.min,
+			max: inputProps.max,
+			onchange: this.localOnChange
+		}
+	}
+	
 	
 	render() {
-		const {props} = this,
+		const {props, state} = this,
 			id = this.handleOptional("id", null),
 			label = props.label ? (
 				<div className="input__label">
@@ -51,12 +66,13 @@ export default class Input extends React.Component<InputProps, any> {
 				</div>
 			) : null,
 			classes = this.handleOptional("classes", "input", true),
-			error = this.handleOptional("error", "Invalid input")
+			error = this.handleOptional("error", "Invalid input"),
+			newProps = this.handleNewProps()
 		return (
 			<div id={id} className={classes}>
 				{label}
 				<div className="input__field">
-					<input onChange={this.debounceOnChangeHandler} {...props.inputProps}/>
+					<input {...newProps}/>
 					<h1 className="input__error">{error}</h1>
 				</div>
 			</div>

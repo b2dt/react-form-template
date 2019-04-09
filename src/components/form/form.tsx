@@ -13,18 +13,30 @@ export interface FormProps {
 export default class Form extends React.Component<FormProps, any> {
 	constructor(props) {
 		super(props);
-		this.convertPropsToHtml = this.convertPropsToHtml.bind(this)
+		this.convertPropsToInputs = this.convertPropsToInputs.bind(this)
 		this.convert = this.convert.bind(this)
+		this.updateFieldValue = this.updateFieldValue.bind(this)
 		this.state = {
-			formState : this.props.formFields.map((field, index) => {})
+			formState: this.props.formFields.map((field, index) => {
+				return {
+					index: index,
+					...field,
+				}
+			})
 		}
 	}
 	
 	componentDidMount(): void {
-	
+		// console.log(this.state.formState)
 	}
 	
-	convertTextToHtml(textProps: FormFieldProps, columns: ColumnRange) {
+	updateFieldValue(e) {
+		const {state} = this
+		console.log(state.formState)
+		state.formState.find(input => input)
+	}
+	
+	convertToTextBox(textProps: FormFieldProps, columns: ColumnRange) {
 		const columnClassname = columns + "-columns"
 		let classes = classNames("input", columnClassname)
 		return (
@@ -33,45 +45,47 @@ export default class Form extends React.Component<FormProps, any> {
 				id={textProps.id}
 				classes={classes}
 				label={textProps.label}
+				index={textProps.index}
+				updateFormList={this.updateFieldValue}
 				inputProps={{
 					type: "text",
-					placeholder: textProps.defaultText
+					placeholder: textProps.placeholder,
 				}}
 			/>
 		)
 	}
 	
-	convertButtonToHtml(buttonProps: FormFieldProps, columns: ColumnRange) {
+	convertToButton(buttonProps: FormFieldProps, columns: ColumnRange) {
 	
 	}
 	
-	convertDropdownToHtml(dropdownProps: FormFieldProps, columns: ColumnRange) {
+	convertToDropdown(dropdownProps: FormFieldProps, columns: ColumnRange) {
 	
 	}
 	
-	convertTextAreaToHtml(textAreaProps: FormFieldProps, columns: ColumnRange) {
+	convertToTextArea(textAreaProps: FormFieldProps, columns: ColumnRange) {
 	
 	}
 	
 	convert(formProp: FormFieldProps) {
 		const {props} = this
 		if (formProp.inputType == InputType.Text)
-			return this.convertTextToHtml(formProp, props.inputsPerRow)
+			return this.convertToTextBox(formProp, props.inputsPerRow)
 		else if (formProp.inputType == InputType.Button)
-			return this.convertButtonToHtml(formProp, props.inputsPerRow)
+			return this.convertToButton(formProp, props.inputsPerRow)
 		else if (formProp.inputType == InputType.Dropdown)
-			return this.convertDropdownToHtml(formProp, props.inputsPerRow)
+			return this.convertToDropdown(formProp, props.inputsPerRow)
 		else if (formProp.inputType == InputType.TextArea)
-			return this.convertTextAreaToHtml(formProp, props.inputsPerRow)
+			return this.convertToTextArea(formProp, props.inputsPerRow)
 	}
 	
-	convertPropsToHtml() {
-		return this.props.formFields.map(field => this.convert(field))
+	convertPropsToInputs() {
+		return this.state.formState.map(field => this.convert(field))
 	}
 	
 	render(): React.ReactNode {
 		const {props} = this
-		let formFields = this.convertPropsToHtml()
+		let formFields = this.convertPropsToInputs()
 		return (
 			<div id='formContainer'>
 				{formFields}
