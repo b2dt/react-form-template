@@ -1,0 +1,48 @@
+.input{
+  width: 100%;
+  .input__label{
+    h1{
+      color: $blue;
+      font-size: 1em;
+      font-weight: 400;
+      margin: 0px;
+      margin-bottom: 5px;
+      margin-left: 20px;
+    }
+  }
+
+  .input__field{
+    width: 100%;
+    input{
+      background-color: $offWhite;
+      border: 1px solid gray(220);
+      border-radius: 100px;
+      color: gray(60);
+      font-size: 1em;
+      font-weight: 400;
+      outline: none;
+      padding: 10px 20px;
+      width: calc(100% - 42px);
+
+      &:focus{
+        background-color: rgba($blue, 0.15);
+      }
+
+      &:invalid{
+        + .input__error{
+          display: block;
+        }
+      }
+    }
+
+    .input__error{
+      color: $red;
+      display: none;
+      font-size: 0.8em;
+      font-weight: 400;
+      margin: 0px;
+      margin-left: 20px;
+      margin-top: 5px;
+    }
+  }
+}

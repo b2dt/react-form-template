@@ -1,3 +1,10 @@
+@import '../general/checkbox/checkbox.scss';
+@import '../general/dropdown/dropdown.scss';
+@import '../general/input/input.scss';
+@import '../general/multiSelection/multiSelection.scss';
+@import '../general/table/table.scss';
+@import '../general/textarea/textarea.scss';
+
 #formContainer {
   background: white;
   border-radius: 15px;
@@ -9,4 +16,9 @@
   left: 50%;
   top: 50%;
   text-align: center;
+
+  .form-text {
+    padding: 5px;
+    border-radius: 10px;
+  }
 }

@@ -2,27 +2,27 @@
 @import 'responsive.scss';
 @import '../form/form.scss';
 
-html, body{
+html, body {
   margin: 0px;
   padding: 0px;
 }
 
-html, body, #root, #app{
+html, body, #root, #app {
   width: 100%;
 }
 
-body{
-  div, h1, input, button, textarea, select, option, ul, li{
+body {
+  div, h1, input, button, textarea, select, option, ul, li {
     font-family: 'Roboto', sans-serif;
   }
 }
 
-#root{
+#root {
   position: relative;
   z-index: 1;
 }
 
-#app{
+#app {
   background-color: $blue;
   min-height: 100vh;
   overflow: auto;

@@ -3,6 +3,7 @@ import {FormFieldProps} from '../../models/formFieldProps';
 import {InputType} from "../../models/inputType";
 import {ColumnRange} from "../../models/columnRange";
 import classNames from 'classnames'
+import Input from "../general/input/input";
 
 export interface FormProps {
 	formFields: FormFieldProps[]
@@ -14,6 +15,9 @@ export default class Form extends React.Component<FormProps, any> {
 		super(props);
 		this.convertPropsToHtml = this.convertPropsToHtml.bind(this)
 		this.convert = this.convert.bind(this)
+		this.state = {
+			formState : this.props.formFields.map((field, index) => {})
+		}
 	}
 	
 	componentDidMount(): void {
@@ -22,16 +26,18 @@ export default class Form extends React.Component<FormProps, any> {
 	
 	convertTextToHtml(textProps: FormFieldProps, columns: ColumnRange) {
 		const columnClassname = columns + "-columns"
-		let classes = classNames("form-text", columnClassname)
+		let classes = classNames("input", columnClassname)
 		return (
-			<div className="form-text">
-				<input
-					id={textProps.id}
-					className={classes}
-					type="text"
-					placeholder={textProps.defaultText ? textProps.defaultText : ""}
-				/>
-			</div>
+			<Input
+				key={textProps.id}
+				id={textProps.id}
+				classes={classes}
+				label={textProps.label}
+				inputProps={{
+					type: "text",
+					placeholder: textProps.defaultText
+				}}
+			/>
 		)
 	}
 	

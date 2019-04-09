@@ -29,13 +29,14 @@ export default class App extends React.Component<AppPageProps, any> {
 				id: "rus-name",
 				required: true,
 				inputType: InputType.Text,
-				defaultText: "BRONTS"
+				defaultText: "BRONTS",
+				label: "First Name"
 			},
 			{
 				id: "rus-id",
-				required: false,
 				inputType: InputType.Text,
-				defaultText: "tso5912"
+				defaultText: "tso5912",
+				label: "User Id"
 			}
 		]
 		
