@@ -6,24 +6,18 @@ import classNames from 'classnames'
 import Input from "../general/input/input";
 
 export interface FormProps {
-	formFields: FormFieldProps[]
-	inputsPerRow: ColumnRange
+	title: string
+	formFields?: FormFieldProps[]
+	inputsPerRow?: ColumnRange
 }
 
 export default class Form extends React.Component<FormProps, any> {
 	constructor(props) {
 		super(props);
-		this.convertPropsToInputs = this.convertPropsToInputs.bind(this)
+		this.convertFormFieldPropsToInputs = this.convertFormFieldPropsToInputs.bind(this)
 		this.convert = this.convert.bind(this)
 		this.updateFieldValue = this.updateFieldValue.bind(this)
-		this.state = {
-			formState: this.props.formFields.map((field, index) => {
-				return {
-					index: index,
-					...field,
-				}
-			})
-		}
+		this.createForm = this.createForm.bind(this)
 	}
 	
 	componentDidMount(): void {
@@ -33,7 +27,6 @@ export default class Form extends React.Component<FormProps, any> {
 	updateFieldValue(e) {
 		const {state} = this
 		console.log(state.formState)
-		state.formState.find(input => input)
 	}
 	
 	convertToTextBox(textProps: FormFieldProps, columns: ColumnRange) {
@@ -79,15 +72,25 @@ export default class Form extends React.Component<FormProps, any> {
 			return this.convertToTextArea(formProp, props.inputsPerRow)
 	}
 	
-	convertPropsToInputs() {
-		return this.state.formState.map(field => this.convert(field))
+	convertFormFieldPropsToInputs() {
+		return this.props.formFields.map(field => this.convert(field))
+	}
+	
+	createForm() {
+		const {props} = this
+		if (props.children === null || props.children === undefined) {
+			return this.convertFormFieldPropsToInputs()
+		} else {
+			return this.props.children
+		}
 	}
 	
 	render(): React.ReactNode {
 		const {props} = this
-		let formFields = this.convertPropsToInputs()
+		let formFields = this.createForm()
 		return (
 			<div id='formContainer'>
+				<h1>{props.title}</h1>
 				{formFields}
 			</div>
 		);

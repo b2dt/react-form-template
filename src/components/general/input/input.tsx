@@ -52,7 +52,7 @@ export default class Input extends React.Component<InputProps, any> {
 			pattern: inputProps.pattern,
 			min: inputProps.min,
 			max: inputProps.max,
-			onchange: this.localOnChange
+			onChange: this.localOnChange
 		}
 	}
 	
