@@ -5,10 +5,10 @@
 @import '../general/table/table.scss';
 @import '../general/textarea/textarea.scss';
 
-#formContainer {
+.form-container {
   background: white;
   border-radius: 15px;
-  width: fit-content;
+  width: 70%;
   padding: 20px 15px;
   margin: 20px auto;
   box-shadow: rgba(0, 0, 0, 0.12) 0 1px 6px, rgba(0, 0, 0, 0.12) 0 1px 4px;
@@ -16,9 +16,63 @@
   left: 50%;
   top: 50%;
   text-align: center;
+  font-size: 14px;
 
-  .form-text {
+  .form-field-wrapper {
+    width: 100%;
+    display: inline-block;
+    position: relative;
+
+    .form-text-input {
+      border-radius: 10px;
+    }
+
+    .form-section {
+      padding: 15px 0;
+
+      .form-section-title {
+        font-size: 18px;
+        font-weight: 300;
+      }
+
+      .title-separator {
+        padding-bottom: 8px;
+        border-top: 1px solid black;
+        width: 70%;
+        margin: auto;
+        opacity: .2;
+      }
+    }
+  }
+
+  .form-title {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .field {
+    text-align: left;
     padding: 5px;
-    border-radius: 10px;
+
+    &.col-one {
+      //default is one column?
+    }
+
+    &.col-two {
+      float: left;
+      display: inline-block;
+      width: 45%;
+      padding-left: 15px;
+    }
+
+    &.col-three {
+      float: left;
+      display: inline-block;
+      width: 30%;
+      padding-left: 15px;
+    }
   }
 }
+
+//TODO setup media-queries in order to make the forms look fine based on size
+//never go above requested column param, but scale columns down as page gets smaller.

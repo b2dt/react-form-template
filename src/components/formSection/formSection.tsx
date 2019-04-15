@@ -7,11 +7,12 @@ export default class FormSection extends Form {
 	}
 	
 	render() {
-		const{props} = this
+		const {props} = this
 		let formFields = this.createForm()
 		return (
-			<div>
-				<h1>{props.title}</h1>
+			<div className={"form-section"}>
+				<div className={"form-section-title"}>{props.title}</div>
+				<div className={"title-separator"}/>
 				{formFields}
 			</div>
 		)

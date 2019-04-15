@@ -29,59 +29,76 @@ export default class Form extends React.Component<FormProps, any> {
 		console.log(state.formState)
 	}
 	
-	convertToTextBox(textProps: FormFieldProps, columns: ColumnRange) {
-		const columnClassname = columns + "-columns"
-		let classes = classNames("input", columnClassname)
+	convertToTextBox(textProps: FormFieldProps, columnClassName: string) {
+		let classes = classNames('field', columnClassName)
 		return (
-			<Input
-				key={textProps.id}
-				id={textProps.id}
-				classes={classes}
-				label={textProps.label}
-				index={textProps.index}
-				updateFormList={this.updateFieldValue}
-				inputProps={{
-					type: "text",
-					placeholder: textProps.placeholder,
-				}}
-			/>
+			<div className={classes} key={textProps.id}>
+				<Input
+					id={textProps.id}
+					classes={"form-text-input"}
+					label={textProps.label}
+					index={textProps.index}
+					updateFormList={this.updateFieldValue}
+					inputProps={{
+						type: "text",
+						placeholder: textProps.placeholder,
+					}}
+				/>
+			</div>
 		)
 	}
 	
-	convertToButton(buttonProps: FormFieldProps, columns: ColumnRange) {
-	
+	convertToButton(buttonProps: FormFieldProps, columnClassName: string) {
+		let classes = classNames("form-text-input", columnClassName)
+		
+		
 	}
 	
-	convertToDropdown(dropdownProps: FormFieldProps, columns: ColumnRange) {
-	
+	convertToDropdown(dropdownProps: FormFieldProps, columnClassName: string) {
+		let classes = classNames("form-text-input", columnClassName)
+		
+		
 	}
 	
-	convertToTextArea(textAreaProps: FormFieldProps, columns: ColumnRange) {
-	
+	convertToTextArea(textAreaProps: FormFieldProps, columnClassName: string) {
+		let classes = classNames("form-text-input", columnClassName)
+		
+		
 	}
 	
 	convert(formProp: FormFieldProps) {
 		const {props} = this
+		let columnClassName = classNames({"col-one": props.inputsPerRow == ColumnRange.ONE}, {"col-two": props.inputsPerRow == ColumnRange.TWO}, {"col-three": props.inputsPerRow == ColumnRange.THREE})
+		
 		if (formProp.inputType == InputType.Text)
-			return this.convertToTextBox(formProp, props.inputsPerRow)
+			return this.convertToTextBox(formProp, columnClassName)
 		else if (formProp.inputType == InputType.Button)
-			return this.convertToButton(formProp, props.inputsPerRow)
+			return this.convertToButton(formProp, columnClassName)
 		else if (formProp.inputType == InputType.Dropdown)
-			return this.convertToDropdown(formProp, props.inputsPerRow)
+			return this.convertToDropdown(formProp, columnClassName)
 		else if (formProp.inputType == InputType.TextArea)
-			return this.convertToTextArea(formProp, props.inputsPerRow)
+			return this.convertToTextArea(formProp, columnClassName)
 	}
 	
 	convertFormFieldPropsToInputs() {
-		return this.props.formFields.map(field => this.convert(field))
+		return this.props.formFields.map(field => (this.convert(field)))
 	}
 	
 	createForm() {
 		const {props} = this
+		console.log(props.inputsPerRow)
 		if (props.children === null || props.children === undefined) {
-			return this.convertFormFieldPropsToInputs()
+			return (
+				<div className={"form-field-wrapper"}>
+					{this.convertFormFieldPropsToInputs()}
+				</div>
+			)
 		} else {
-			return this.props.children
+			return (
+				<div className={"form-field-wrapper"}>
+					{this.props.children}
+				</div>
+			)
 		}
 	}
 	
@@ -89,8 +106,8 @@ export default class Form extends React.Component<FormProps, any> {
 		const {props} = this
 		let formFields = this.createForm()
 		return (
-			<div id='formContainer'>
-				<h1>{props.title}</h1>
+			<div className={'form-container'}>
+				<div className={'form-title'}>{props.title}</div>
 				{formFields}
 			</div>
 		);
