@@ -61,14 +61,14 @@
     &.col-two {
       float: left;
       display: inline-block;
-      width: 45%;
+      width: 100%/2 - 3%;
       padding-left: 15px;
     }
 
     &.col-three {
       float: left;
       display: inline-block;
-      width: 30%;
+      width: 100%/3 - 3%;
       padding-left: 15px;
     }
   }

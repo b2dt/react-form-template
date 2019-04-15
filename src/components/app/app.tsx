@@ -58,7 +58,7 @@ export default class App extends React.Component<AppPageProps, any> {
 					<FormSection title="Subsection 3 Form" formFields={formProps} inputsPerRow={3}/>
 				</Form>
 				<Form
-					title={"Braden is stupid"}
+					title={"Braden lika-do-da-cha-cha"}
 					formFields={formProps}
 					inputsPerRow={2}
 					/>
