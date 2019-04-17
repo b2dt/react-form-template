@@ -15,24 +15,54 @@
   font-family: 'Roboto', sans-serif;
   left: 50%;
   top: 50%;
-  text-align: center;
+  text-align: left;
   font-size: 14px;
+
+  .form-title {
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+  }
 
   .form-field-wrapper {
     width: 100%;
     display: inline-block;
     position: relative;
 
-    .form-text-input {
-      border-radius: 10px;
+    .field {
+      text-align: left;
+      padding: 5px;
+      position: relative;
+
+      .form-text-input {
+        border-radius: 10px;
+      }
+
+      &.col-one {
+        //default is one column?
+      }
+
+      &.col-two {
+        display: inline-block;
+        width: 100%/2 - 3%;
+        padding-left: 15px;
+      }
+
+      &.col-three {
+        display: inline-block;
+        width: 100%/3 - 3%;
+        padding-left: 15px;
+      }
     }
 
     .form-section {
       padding: 15px 0;
+      text-align: left;
 
       .form-section-title {
         font-size: 18px;
         font-weight: 300;
+        text-align: center;
       }
 
       .title-separator {
@@ -45,34 +75,26 @@
     }
   }
 
-  .form-title {
-    font-size: 20px;
-    font-weight: 400;
+  .button-container-separator {
+    border-top: 2px solid black;
+    width: 70%;
+    margin: 20px auto 0 auto;
+    opacity: .2;
+
   }
 
-  .field {
-    text-align: left;
-    padding: 5px;
+  .button-container {
+    margin: 30px auto;
+    text-align: center;
 
-    &.col-one {
-      //default is one column?
-    }
-
-    &.col-two {
-      float: left;
+    .form-button {
+      width: 150px;
       display: inline-block;
-      width: 100%/2 - 3%;
-      padding-left: 15px;
-    }
-
-    &.col-three {
-      float: left;
-      display: inline-block;
-      width: 100%/3 - 3%;
-      padding-left: 15px;
+      margin: 10px 10px 0 10px;
     }
   }
 }
+
 
 //TODO setup media-queries in order to make the forms look fine based on size
 //never go above requested column param, but scale columns down as page gets smaller.

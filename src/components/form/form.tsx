@@ -21,12 +21,17 @@ export default class Form extends React.Component<FormProps, FormState> {
 		this.updateFieldValue = this.updateFieldValue.bind(this)
 		this.createForm = this.createForm.bind(this)
 		this.submitLocalForm = this.submitLocalForm.bind(this)
+		this.resetForm = this.resetForm.bind(this)
 		this.state = {
 			formFields: []
 		}
 	}
 	
 	componentDidMount(): void {
+	
+	}
+	
+	resetForm() {
 	
 	}
 	
@@ -42,10 +47,9 @@ export default class Form extends React.Component<FormProps, FormState> {
 			props.submitForm(props.formFields)
 		} else {
 			let fields: any[] = React.Children.map(props.children, (child: any) => {
-				return {...child.props.formFields}
+				return {...child.props.formFields, sectionIndex: child.props.sectionIndex}
 			})
 			console.log(props.children)
-			console.log(fields)
 			props.submitForm(fields)
 		}
 	}
@@ -61,30 +65,41 @@ export default class Form extends React.Component<FormProps, FormState> {
 		} else {
 			return (
 				<div className={"form-field-wrapper"}>
-					{React.Children.map(this.props.children,
-						(child: any, index) => {
-							child = {...child}
-							console.log(child)
-							return child
-						})
+					{React.Children.map(props.children,
+						(child: any, index) => React.cloneElement(child, {sectionIndex: index}))
 					}
 				</div>
 			)
 		}
 	}
 	
+	createButtons() {
+		return (
+			<div className={"button-container"}>
+				<div className={"button form-button"}
+						 onClick={this.submitLocalForm}>
+					Submit
+				</div>
+				<div className={"button form-button"}
+						 onClick={this.resetForm}>
+					Reset Form
+				</div>
+			</div>
+		)
+	}
+	
 	render(): React.ReactNode {
 		const {props} = this
 		let formFields = this.createForm()
+		React.Children.forEach(props.children,(child) => console.log(child))
+		console.log(formFields)
+		let buttons = this.createButtons()
 		return (
 			<div className={'form-container'}>
 				<div className={'form-title'}>{props.title}</div>
 				{formFields}
-				<button className={"form-button"}
-								type="button"
-								onClick={this.submitLocalForm}>
-					Submit
-				</button>
+				<div className={"button-container-separator"}/>
+				{buttons}
 			</div>
 		);
 	}
