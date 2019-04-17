@@ -6,6 +6,7 @@ export interface FormFieldProps {
 	label: string
 	index: number
 	
+	value?: string
 	required?: boolean
 	defaultText?: string
 	placeholder?: string

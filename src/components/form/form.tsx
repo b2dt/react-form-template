@@ -1,102 +1,73 @@
 import * as React from 'react'
 import {FormFieldProps} from '../../models/formFieldProps';
-import {InputType} from "../../models/inputType";
 import {ColumnRange} from "../../models/columnRange";
-import classNames from 'classnames'
-import Input from "../general/input/input";
+import * as FormCreationUtil from "../../utility/formCreationUtil"
 
 export interface FormProps {
 	title: string
 	formFields?: FormFieldProps[]
 	inputsPerRow?: ColumnRange
+	
+	submitForm?: (any) => any
 }
 
-export default class Form extends React.Component<FormProps, any> {
+export interface FormState {
+	formFields?: FormFieldProps[]
+}
+
+export default class Form extends React.Component<FormProps, FormState> {
 	constructor(props) {
 		super(props);
-		this.convertFormFieldPropsToInputs = this.convertFormFieldPropsToInputs.bind(this)
-		this.convert = this.convert.bind(this)
 		this.updateFieldValue = this.updateFieldValue.bind(this)
 		this.createForm = this.createForm.bind(this)
+		this.submitLocalForm = this.submitLocalForm.bind(this)
+		this.state = {
+			formFields: []
+		}
 	}
 	
 	componentDidMount(): void {
-		// console.log(this.state.formState)
+	
 	}
 	
 	updateFieldValue(e) {
 		const {state} = this
-		console.log(state.formState)
+		// console.log(state.formState)
 	}
 	
-	convertToTextBox(textProps: FormFieldProps, columnClassName: string) {
-		let classes = classNames('field', columnClassName)
-		return (
-			<div className={classes} key={textProps.id}>
-				<Input
-					id={textProps.id}
-					classes={"form-text-input"}
-					label={textProps.label}
-					index={textProps.index}
-					updateFormList={this.updateFieldValue}
-					inputProps={{
-						type: "text",
-						placeholder: textProps.placeholder,
-					}}
-				/>
-			</div>
-		)
-	}
-	
-	convertToButton(buttonProps: FormFieldProps, columnClassName: string) {
-		let classes = classNames("form-text-input", columnClassName)
-		
-		
-	}
-	
-	convertToDropdown(dropdownProps: FormFieldProps, columnClassName: string) {
-		let classes = classNames("form-text-input", columnClassName)
-		
-		
-	}
-	
-	convertToTextArea(textAreaProps: FormFieldProps, columnClassName: string) {
-		let classes = classNames("form-text-input", columnClassName)
-		
-		
-	}
-	
-	convert(formProp: FormFieldProps) {
+	submitLocalForm() {
 		const {props} = this
-		let columnClassName = classNames({"col-one": props.inputsPerRow == ColumnRange.ONE}, {"col-two": props.inputsPerRow == ColumnRange.TWO}, {"col-three": props.inputsPerRow == ColumnRange.THREE})
-		
-		if (formProp.inputType == InputType.Text)
-			return this.convertToTextBox(formProp, columnClassName)
-		else if (formProp.inputType == InputType.Button)
-			return this.convertToButton(formProp, columnClassName)
-		else if (formProp.inputType == InputType.Dropdown)
-			return this.convertToDropdown(formProp, columnClassName)
-		else if (formProp.inputType == InputType.TextArea)
-			return this.convertToTextArea(formProp, columnClassName)
-	}
-	
-	convertFormFieldPropsToInputs() {
-		return this.props.formFields.map(field => (this.convert(field)))
+		if (props.children === null || props.children === undefined) {
+			console.log(props.formFields)
+			props.submitForm(props.formFields)
+		} else {
+			let fields: any[] = React.Children.map(props.children, (child: any) => {
+				return {...child.props.formFields}
+			})
+			console.log(props.children)
+			console.log(fields)
+			props.submitForm(fields)
+		}
 	}
 	
 	createForm() {
 		const {props} = this
-		console.log(props.inputsPerRow)
 		if (props.children === null || props.children === undefined) {
 			return (
 				<div className={"form-field-wrapper"}>
-					{this.convertFormFieldPropsToInputs()}
+					{FormCreationUtil.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)}
 				</div>
 			)
 		} else {
 			return (
 				<div className={"form-field-wrapper"}>
-					{this.props.children}
+					{React.Children.map(this.props.children,
+						(child: any, index) => {
+							child = {...child}
+							console.log(child)
+							return child
+						})
+					}
 				</div>
 			)
 		}
@@ -109,6 +80,11 @@ export default class Form extends React.Component<FormProps, any> {
 			<div className={'form-container'}>
 				<div className={'form-title'}>{props.title}</div>
 				{formFields}
+				<button className={"form-button"}
+								type="button"
+								onClick={this.submitLocalForm}>
+					Submit
+				</button>
 			</div>
 		);
 	}

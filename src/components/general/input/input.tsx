@@ -7,11 +7,9 @@ export interface InputProps {
 	classes?: string
 	label?: string
 	error?: string
-	debounceInput?: boolean
-	debounceAmount?: number
 	inputProps?: InputAttributes
 	
-	updateFormList?: (x: any, y: any) => any
+	updateFieldValue?: (x: any, y: any) => any
 }
 
 export default class Input extends React.Component<InputProps, any> {
@@ -19,18 +17,12 @@ export default class Input extends React.Component<InputProps, any> {
 		super(props)
 		this.localOnChange = this.localOnChange.bind(this)
 		this.handleNewProps = this.handleNewProps.bind(this)
-		this.state = {
-			value: ""
-		}
 	}
 	
 	localOnChange(e) {
 		const value = e.target.value,
 			{props} = this
-		this.setState({
-			value: value
-		})
-		this.props.updateFormList(value, props.index)
+		props.updateFieldValue(value, props.index)
 	}
 	
 	handleOptional(prop: string, defaultValue: any = null, appendDefaultValue: boolean = false) {

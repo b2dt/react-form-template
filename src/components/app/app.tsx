@@ -4,6 +4,7 @@ import {RouteComponentProps} from "react-router";
 import Form from '../form/form';
 import {InputType} from "../../models/inputType";
 import FormSection from "../formSection/formSection";
+import {FormFieldProps} from "../../models/formFieldProps";
 
 export interface AppPageProps extends RouteComponentProps<any> {
 
@@ -12,7 +13,7 @@ export interface AppPageProps extends RouteComponentProps<any> {
 export default class App extends React.Component<AppPageProps, any> {
 	constructor(props) {
 		super(props)
-		
+		this.submitForm = this.submitForm.bind(this)
 	}
 	
 	componentDidMount() {
@@ -20,6 +21,10 @@ export default class App extends React.Component<AppPageProps, any> {
 	}
 	
 	componentDidUpdate(prevProps, prevState) {
+	
+	}
+	
+	submitForm(formFields: FormFieldProps[]) {
 	
 	}
 	
@@ -52,7 +57,7 @@ export default class App extends React.Component<AppPageProps, any> {
 		
 		return (
 			<div id="app">
-				<Form title="NEW CONTAINER FORM">
+				<Form title="NEW CONTAINER FORM" submitForm={this.submitForm}>
 					<FormSection title="Subsection 1 Form" formFields={formProps} inputsPerRow={1}/>
 					<FormSection title="Subsection 2 Form" formFields={formProps} inputsPerRow={2}/>
 					<FormSection title="Subsection 3 Form" formFields={formProps} inputsPerRow={3}/>
@@ -61,7 +66,8 @@ export default class App extends React.Component<AppPageProps, any> {
 					title={"Braden lika-do-da-cha-cha"}
 					formFields={formProps}
 					inputsPerRow={2}
-					/>
+					submitForm={this.submitForm}
+				/>
 			</div>
 		)
 	}
