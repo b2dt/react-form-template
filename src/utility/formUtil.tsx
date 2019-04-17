@@ -4,9 +4,15 @@ import {ColumnRange} from "../models/columnRange";
 import {InputType} from "../models/inputType";
 import classNames from 'classnames'
 import Input from "../components/general/input/input";
+import * as _ from 'lodash'
+
+export const sortFieldProps = (formFields: FormFieldProps[]) => {
+	return _.sortBy(formFields, (field) => field.index)
+}
 
 export const convertFormFieldPropsToInputs = (formFields: FormFieldProps[], numOfColumns: ColumnRange, updateFieldVal: any) => {
-	return formFields.map(field => (convert(field, numOfColumns, updateFieldVal)))
+	let sortedFormFields = sortFieldProps(formFields)
+	return sortedFormFields.map(field => (convert(field, numOfColumns, updateFieldVal)))
 }
 
 const convert = (formProp: FormFieldProps, numOfColumns: ColumnRange, updateFieldVal: any) => {

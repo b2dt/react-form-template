@@ -1,7 +1,8 @@
 import * as React from 'react'
 import {FormFieldProps} from '../../models/formFieldProps';
 import {ColumnRange} from "../../models/columnRange";
-import * as FormCreationUtil from "../../utility/formCreationUtil"
+import * as FormUtil from "../../utility/formUtil"
+import FormSection from "../formSection/formSection";
 
 export interface FormProps {
 	title: string
@@ -11,20 +12,14 @@ export interface FormProps {
 	submitForm?: (any) => any
 }
 
-export interface FormState {
-	formFields?: FormFieldProps[]
-}
-
-export default class Form extends React.Component<FormProps, FormState> {
+export default class Form extends React.Component<FormProps, any> {
 	constructor(props) {
 		super(props);
 		this.updateFieldValue = this.updateFieldValue.bind(this)
 		this.createForm = this.createForm.bind(this)
 		this.submitLocalForm = this.submitLocalForm.bind(this)
 		this.resetForm = this.resetForm.bind(this)
-		this.state = {
-			formFields: []
-		}
+		
 	}
 	
 	componentDidMount(): void {
@@ -36,8 +31,8 @@ export default class Form extends React.Component<FormProps, FormState> {
 	}
 	
 	updateFieldValue(e) {
-		const {state} = this
-		// console.log(state.formState)
+		const {props} = this
+		console.log(props)
 	}
 	
 	submitLocalForm() {
@@ -59,15 +54,24 @@ export default class Form extends React.Component<FormProps, FormState> {
 		if (props.children === null || props.children === undefined) {
 			return (
 				<div className={"form-field-wrapper"}>
-					{FormCreationUtil.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)}
+					{FormUtil.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)}
 				</div>
 			)
 		} else {
 			return (
 				<div className={"form-field-wrapper"}>
-					{React.Children.map(props.children,
-						(child: any, index) => React.cloneElement(child, {sectionIndex: index}))
-					}
+					{React.Children.map(props.children, (child: any, index: any) => {
+						console.log(child.props)
+						return (
+							<FormSection
+								title={child.props.title}
+								inputsPerRow={child.props.inputsPerRow}
+								formFields={child.props.formFields}
+								index={index}
+								updateFieldValue={this.updateFieldValue}
+							/>
+						)
+					})}
 				</div>
 			)
 		}
@@ -91,8 +95,6 @@ export default class Form extends React.Component<FormProps, FormState> {
 	render(): React.ReactNode {
 		const {props} = this
 		let formFields = this.createForm()
-		React.Children.forEach(props.children,(child) => console.log(child))
-		console.log(formFields)
 		let buttons = this.createButtons()
 		return (
 			<div className={'form-container'}>
