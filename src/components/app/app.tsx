@@ -37,7 +37,6 @@ export default class App extends React.Component<AppPageProps, any> {
 				required: true,
 				inputType: InputType.Text,
 				placeholder: "BRONTS",
-				defaultText: "",
 				label: "First Name"
 			}, {
 				index: 1,

@@ -1,8 +1,9 @@
-import * as React from 'react'
+import * as React from 'react';
 import {FormFieldProps} from '../../models/formFieldProps';
 import {ColumnRange} from "../../models/columnRange";
-import * as FormUtil from "../../utility/formUtil"
-import FormSection from "../formSection/formSection";
+import * as FormUtil from "../../utility/formUtil";
+import * as PropMapper from "../../mappers/propMapper";
+import FormSection, {FormSectionProps} from "../formSection/formSection";
 
 export interface FormProps {
 	title: string
@@ -12,27 +13,39 @@ export interface FormProps {
 	submitForm?: (any) => any
 }
 
-export default class Form extends React.Component<FormProps, any> {
+export interface FormValues {
+	formFields?: FormFieldProps[]
+	formSectionValues?: FormSectionProps[]
+}
+
+export default class Form extends React.Component<FormProps, FormValues> {
 	constructor(props) {
 		super(props);
 		this.updateFieldValue = this.updateFieldValue.bind(this)
 		this.createForm = this.createForm.bind(this)
 		this.submitLocalForm = this.submitLocalForm.bind(this)
 		this.resetForm = this.resetForm.bind(this)
-		
+		this.state = {
+			formSectionValues: props.children === undefined ? [] : PropMapper.mapSectionPropsToState(props.children),
+			formFields: []
+		}
 	}
 	
 	componentDidMount(): void {
-	
+		const {props, state} = this
+		if (props.children !== null || props.children !== undefined) {
+		
+		}
 	}
 	
 	resetForm() {
 	
 	}
 	
-	updateFieldValue(e) {
+	updateFieldValue(newVal: string, fieldIndex: number, sectionIndex: number) {
 		const {props} = this
-		console.log(props)
+		console.log("Field Index:" + fieldIndex + ", sectionIndex:" + sectionIndex)
+		
 	}
 	
 	submitLocalForm() {
@@ -50,18 +63,17 @@ export default class Form extends React.Component<FormProps, any> {
 	}
 	
 	createForm() {
-		const {props} = this
-		if (props.children === null || props.children === undefined) {
+		const {state, props} = this
+		if (state.formSectionValues == [] || state.formSectionValues === null) {
 			return (
 				<div className={"form-field-wrapper"}>
-					{FormUtil.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)}
+					{FormUtil.convertFormFieldPropsToInputs(state.formFields, props.inputsPerRow, this.updateFieldValue)}
 				</div>
 			)
 		} else {
 			return (
 				<div className={"form-field-wrapper"}>
-					{React.Children.map(props.children, (child: any, index: any) => {
-						console.log(child.props)
+					{state.formSectionValues.map((child: any, index: any) => {
 						return (
 							<FormSection
 								title={child.props.title}

@@ -17,12 +17,21 @@ export default class Input extends React.Component<InputProps, any> {
 		super(props)
 		this.localOnChange = this.localOnChange.bind(this)
 		this.handleNewProps = this.handleNewProps.bind(this)
+		this.state = {
+			value: props.inputProps.defaultValue
+		}
+	}
+	
+	componentDidMount(): void {
 	}
 	
 	localOnChange(e) {
 		const value = e.target.value,
 			{props} = this
-		props.updateFieldValue(value, props.index)
+		this.setState({
+			value: e.target.value
+		})
+		// props.updateFieldValue(value, props.index)
 	}
 	
 	handleOptional(prop: string, defaultValue: any = null, appendDefaultValue: boolean = false) {
@@ -38,8 +47,7 @@ export default class Input extends React.Component<InputProps, any> {
 			{inputProps} = props
 		return {
 			type: inputProps.type,
-			value: inputProps.value,
-			defaultValue: inputProps.defaultValue,
+			value: state.value,
 			placeholder: inputProps.placeholder,
 			pattern: inputProps.pattern,
 			min: inputProps.min,
@@ -50,7 +58,7 @@ export default class Input extends React.Component<InputProps, any> {
 	
 	
 	render() {
-		const {props, state} = this,
+		const {props} = this,
 			id = this.handleOptional("id", null),
 			label = props.label ? (
 				<div className="input__label">

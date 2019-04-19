@@ -5,6 +5,7 @@ export interface FormFieldProps {
 	inputType: InputType
 	label: string
 	index: number
+	sectionIndex?: number
 	
 	value?: string
 	required?: boolean

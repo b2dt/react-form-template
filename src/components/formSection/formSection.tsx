@@ -9,7 +9,7 @@ export interface FormSectionProps {
 	inputsPerRow?: ColumnRange
 	index?: any
 	
-	updateFieldValue?: (any) => any
+	updateFieldValue?: (newVal, fieldIndex, sectionIndex) => any
 }
 
 export default class FormSection extends React.Component<FormSectionProps, any> {
@@ -18,11 +18,10 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 		this.updateFieldValue = this.updateFieldValue.bind(this)
 	}
 	
-	updateFieldValue(e) {
-		const {state, props} = this
-		console.log(props)
-		console.log(state)
-		this.props.updateFieldValue(e)
+	updateFieldValue(newVal: string, fieldIndex: number) {
+		const {props} = this
+		console.log(newVal + " and index " + fieldIndex)
+		this.props.updateFieldValue(newVal, fieldIndex, props.index)
 	}
 	
 	render() {

@@ -41,7 +41,7 @@ const convertToTextBox = (textProps: FormFieldProps, columnClassName: string, up
 				inputProps={{
 					type: "text",
 					placeholder: textProps.placeholder,
-					value: textProps.defaultText
+					defaultValue: textProps.defaultText
 				}}
 			/>
 		</div>
