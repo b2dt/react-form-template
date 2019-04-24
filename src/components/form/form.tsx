@@ -32,10 +32,6 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	}
 	
 	componentDidMount(): void {
-		const {props, state} = this
-		if (props.children !== null || props.children !== undefined) {
-		
-		}
 	}
 	
 	resetForm() {
@@ -43,28 +39,50 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	}
 	
 	updateFieldValue(newVal: string, fieldIndex: number, sectionIndex: number) {
-		const {props} = this
-		console.log("Field Index:" + fieldIndex + ", sectionIndex:" + sectionIndex)
-		
+		const {state} = this
+		console.log("Field Index:" + fieldIndex + ", sectionIndex:" + sectionIndex + " with value " + newVal)
+		if (sectionIndex == undefined) {
+			let newFormFields: FormFieldProps[] = state.formFields.map((field, index) => {
+				if (index == fieldIndex)
+					field.value = newVal
+				return field
+			})
+			this.setState({
+				formFields: newFormFields
+			})
+		} else {
+			let newFormSectionValues: FormSectionProps[] = state.formSectionValues.map((section, sIndex) => {
+				if (sIndex == sectionIndex) {
+					section.formFields.map((field, fIndex) => {
+						if (fIndex == fieldIndex) {
+							field.value = newVal
+						}
+						return field
+					})
+				}
+				return section
+			})
+			this.setState({
+				formSectionValues: newFormSectionValues
+			})
+		}
 	}
 	
 	submitLocalForm() {
 		const {props} = this
 		if (props.children === null || props.children === undefined) {
-			console.log(props.formFields)
 			props.submitForm(props.formFields)
 		} else {
 			let fields: any[] = React.Children.map(props.children, (child: any) => {
 				return {...child.props.formFields, sectionIndex: child.props.sectionIndex}
 			})
-			console.log(props.children)
 			props.submitForm(fields)
 		}
 	}
 	
 	createForm() {
 		const {state, props} = this
-		if (state.formSectionValues == [] || state.formSectionValues === null) {
+		if (state.formSectionValues.length == 0 || state.formSectionValues === null) {
 			return (
 				<div className={"form-field-wrapper"}>
 					{FormUtil.convertFormFieldPropsToInputs(state.formFields, props.inputsPerRow, this.updateFieldValue)}
@@ -76,9 +94,10 @@ export default class Form extends React.Component<FormProps, FormValues> {
 					{state.formSectionValues.map((child: any, index: any) => {
 						return (
 							<FormSection
-								title={child.props.title}
-								inputsPerRow={child.props.inputsPerRow}
-								formFields={child.props.formFields}
+								key={index}
+								title={child.title}
+								inputsPerRow={child.inputsPerRow}
+								formFields={child.formFields}
 								index={index}
 								updateFieldValue={this.updateFieldValue}
 							/>
@@ -105,7 +124,7 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	}
 	
 	render(): React.ReactNode {
-		const {props} = this
+		const {props, state} = this
 		let formFields = this.createForm()
 		let buttons = this.createButtons()
 		return (

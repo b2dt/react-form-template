@@ -23,7 +23,8 @@ body {
 }
 
 #app {
-  background-color: $blue;
+  background-color: rgba($blue, .8);
+
   min-height: 100vh;
   overflow: auto;
   position: relative;
