@@ -1,12 +1,10 @@
 import * as React from 'react'
-import {renderRoutes} from 'react-router-config'
-import {RouteComponentProps} from "react-router";
 import Form from '../form/form';
 import {InputType} from "../../models/inputType";
 import FormSection from "../formSection/formSection";
 import {FormFieldProps} from "../../models/formFieldProps";
 
-export interface AppPageProps extends RouteComponentProps<any> {
+export interface AppPageProps {
 
 }
 

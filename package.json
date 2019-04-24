@@ -1,8 +1,8 @@
 {
-  "name": "rus",
+  "name": "react-form-template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "/src/index.tsx",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot --color",
     "host": "webpack-dev-server --mode development --open --hot --color --host 10.8.20.33",
@@ -20,11 +20,6 @@
     "moment": "^2.22.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-redux": "^5.0.7",
-    "react-router-config": "^4.4.0-beta.1",
-    "react-router-dom": "^4.3.1",
-    "redux": "^4.0.0",
-    "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "typesafe-actions": "^2.0.4"
   },
