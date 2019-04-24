@@ -1,6 +1,6 @@
 @import 'util.scss';
 @import 'responsive.scss';
-@import '../form/form.scss';
+@import "../../../node_modules/react-lightning-form/lib/index.css";
 
 html, body {
   margin: 0px;
@@ -23,7 +23,7 @@ body {
 }
 
 #app {
-  background-color: rgba($blue, .8);
+  background-color: white;
 
   min-height: 100vh;
   overflow: auto;
