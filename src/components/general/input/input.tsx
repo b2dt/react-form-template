@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {InputAttributes} from '../../../models/inputAttributes'
+import {UpdateObj} from "../../../utility/formUtil";
 
 export interface InputProps {
 	id?: string
@@ -9,7 +10,7 @@ export interface InputProps {
 	error?: string
 	inputProps?: InputAttributes
 	
-	updateFieldValue?: (x: any, y: any) => any
+	updateFieldValue?: (x: UpdateObj) => any
 }
 
 export default class Input extends React.Component<InputProps, any> {
@@ -24,7 +25,11 @@ export default class Input extends React.Component<InputProps, any> {
 	
 	localOnChange(e) {
 		const {props} = this
-		props.updateFieldValue(e.target.value, props.index)
+		let fieldUpdateObj: UpdateObj = {
+			fieldIndex: props.index,
+			newVal: e.target.value
+		}
+		props.updateFieldValue(fieldUpdateObj)
 	}
 	
 	handleOptional(prop: string, defaultValue: any = null, appendDefaultValue: boolean = false) {
@@ -40,7 +45,7 @@ export default class Input extends React.Component<InputProps, any> {
 			{inputProps} = props
 		return {
 			type: inputProps.type,
-			value: inputProps.value,
+			defaultValue: inputProps.defaultValue,
 			placeholder: inputProps.placeholder,
 			pattern: inputProps.pattern,
 			min: inputProps.min,

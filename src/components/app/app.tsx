@@ -1,8 +1,9 @@
 import * as React from 'react'
 import Form from '../form/form';
-import {InputType} from "../../models/inputType";
 import FormSection from "../formSection/formSection";
 import {FormFieldProps} from "../../models/formFieldProps";
+import {InputType} from "../../utility/validation";
+import Input from "../general/input/input";
 
 export interface AppPageProps {
 
@@ -23,7 +24,7 @@ export default class App extends React.Component<AppPageProps, any> {
 	}
 	
 	submitForm(formFields: FormFieldProps[]) {
-	
+		console.log(formFields)
 	}
 	
 	render() {
@@ -82,7 +83,13 @@ export default class App extends React.Component<AppPageProps, any> {
 		return (
 			<div id="app">
 				<Form title="NEW CONTAINER FORM" submitForm={this.submitForm}>
-					<FormSection title="Subsection 1 Form" formFields={formProps} inputsPerRow={1}/>
+					<FormSection title="Subsection 1 Form" inputsPerRow={2}>
+						<FormSection formFields={formProps2} inputsPerRow={2}/>
+						<div>
+							<input type={"text"}/>
+						</div>
+						<FormSection formFields={formProps} inputsPerRow={3}/>
+					</FormSection>
 					<FormSection title="Subsection 2 Form" formFields={formProps2} inputsPerRow={2}/>
 					<FormSection title="Subsection 3 Form" formFields={formProps} inputsPerRow={3}/>
 				</Form>

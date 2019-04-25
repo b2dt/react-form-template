@@ -28,51 +28,6 @@
     width: 100%;
     display: inline-block;
     position: relative;
-
-    .field {
-      text-align: left;
-      padding: 5px;
-      position: relative;
-
-      .form-text-input {
-        border-radius: 10px;
-      }
-
-      &.col-one {
-        //default is one column?
-      }
-
-      &.col-two {
-        display: inline-block;
-        width: 100%/2 - 3%;
-        padding-left: 15px;
-      }
-
-      &.col-three {
-        display: inline-block;
-        width: 100%/3 - 3%;
-        padding-left: 15px;
-      }
-    }
-
-    .form-section {
-      padding: 15px 0;
-      text-align: left;
-
-      .form-section-title {
-        font-size: 18px;
-        font-weight: 300;
-        text-align: center;
-      }
-
-      .title-separator {
-        padding-bottom: 8px;
-        border-top: 1px solid black;
-        width: 70%;
-        margin: auto;
-        opacity: .2;
-      }
-    }
   }
 
   .button-container-separator {
@@ -95,6 +50,50 @@
   }
 }
 
+.field {
+  text-align: left;
+  padding: 5px;
+  position: relative;
+
+  .form-text-input {
+    border-radius: 10px;
+  }
+
+  &.col-one {
+    //default is one column?
+  }
+
+  &.col-two {
+    display: inline-block;
+    width: 100%/2 - 3%;
+    padding-left: 15px;
+  }
+
+  &.col-three {
+    display: inline-block;
+    width: 100%/3 - 3%;
+    padding-left: 15px;
+  }
+}
+
+.form-section {
+  padding: 15px 0;
+  text-align: left;
+
+  .form-section-title {
+    font-size: 18px;
+    font-weight: 300;
+    text-align: center;
+  }
+
+  .title-separator {
+    padding-bottom: 8px;
+    border-top: 1px solid black;
+    width: 70%;
+    margin: auto;
+    opacity: .2;
+  }
+}
 
 //TODO setup media-queries in order to make the forms look fine based on size
 //never go above requested column param, but scale columns down as page gets smaller.

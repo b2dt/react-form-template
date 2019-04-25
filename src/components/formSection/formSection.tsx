@@ -1,15 +1,16 @@
 import * as React from 'react'
-import * as FormUtil from "../../utility/formUtil";
+import * as FormFieldConverter from "../../utility/formFieldConverter";
 import {FormFieldProps} from "../../models/formFieldProps";
 import {ColumnRange} from "../../models/columnRange";
+import {UpdateObj} from "../../utility/formUtil";
 
 export interface FormSectionProps {
-	title: string
-	formFields: FormFieldProps[]
+	formFields?: FormFieldProps[]
+	title?: string
 	inputsPerRow?: ColumnRange
 	index?: any
 	
-	updateFieldValue?: (newVal, fieldIndex, sectionIndex) => any
+	updateFieldValue?: (x: UpdateObj) => any
 }
 
 export default class FormSection extends React.Component<FormSectionProps, any> {
@@ -18,19 +19,20 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 		this.updateFieldValue = this.updateFieldValue.bind(this)
 	}
 	
-	updateFieldValue(newVal: string, fieldIndex: number) {
+	updateFieldValue(updateObj: UpdateObj) {
 		const {props} = this
-		console.log(newVal + " and index " + fieldIndex)
-		this.props.updateFieldValue(newVal, fieldIndex, props.index)
+		updateObj.sectionIndex = props.index
+		this.props.updateFieldValue(updateObj)
 	}
 	
 	render() {
 		const {props} = this
-		let formFields = FormUtil.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)
+		let formFields = FormFieldConverter.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)
+		const separator = props.title == null ? "" : (<div className={"title-separator"}/>)
 		return (
 			<div className={"form-section"}>
 				<div className={"form-section-title"}>{props.title}</div>
-				<div className={"title-separator"}/>
+				{separator}
 				{formFields}
 			</div>
 		)
