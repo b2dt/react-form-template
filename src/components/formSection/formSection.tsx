@@ -7,7 +7,7 @@ import {UpdateObj} from "../../utility/formUtil";
 export interface FormSectionProps {
 	formFields?: FormFieldProps[]
 	title?: string
-	inputsPerRow?: ColumnRange
+	columns?: ColumnRange
 	index?: any
 	
 	updateFieldValue?: (x: UpdateObj) => any
@@ -27,13 +27,14 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 	
 	render() {
 		const {props} = this
-		let formFields = FormFieldConverter.convertFormFieldPropsToInputs(props.formFields, props.inputsPerRow, this.updateFieldValue)
+		let formFields = FormFieldConverter.convertFormFieldPropsToInputs(props.formFields, props.columns, this.updateFieldValue)
 		const separator = props.title == null ? "" : (<div className={"title-separator"}/>)
 		return (
 			<div className={"form-section"}>
 				<div className={"form-section-title"}>{props.title}</div>
 				{separator}
 				{formFields}
+				{props.children}
 			</div>
 		)
 	}

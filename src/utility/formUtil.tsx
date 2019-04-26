@@ -21,31 +21,57 @@ export const FormUtil: any = {
 			}
 			return null;
 		},
-		create: (formState: FormValues, children: JSX.Element[] | any) => {
-		
+		create: (children: JSX.Element[] | any, onChange: any) => {
+			return React.Children.map(children, (child, sectionIndex) => {
+				const {props} = child
+				if(child.type.name == Types.FORM_SECTION){
+					if(props.children == null) {
+
+					} else {
+
+					}
+				} else {
+					if(props.children == null){
+
+					} else {
+						return FormUtil.children.create(child.props.children, onChange)
+					}
+				}
+			})
 		}
 	},
 	children: {
 		create: (children: JSX.Element[] | any, onChange: any) => {
 			return React.Children.map(children, (child, sectionIndex) => {
 				const {props} = child
-				if (props.children == null) {
-					if (child.type.name == Types.FORM_SECTION) {
+				if(child.type.name == Types.FORM_SECTION){
+					console.log(props.title)
+					if(props.children == null) {
 						return (
 							<FormSection
-								inputsPerRow={props.inputsPerRow}
+								columns={props.columns}
 								title={props.title}
 								index={sectionIndex}
 								updateFieldValue={onChange}
 								formFields={props.formFields}
 							/>)
 					} else {
-						let props = {onChange: onChange, sectionIndex: sectionIndex, index: 0}
-						return React.cloneElement(child, props)
+						return <FormSection
+							columns={props.columns}
+							title={props.title}
+							index={sectionIndex}
+							updateFieldValue={onChange}
+							formFields={props.formFields}>
+							{FormUtil.children.create(child.props.children, onChange)}
+						</FormSection>
 					}
 				} else {
-					console.log("Nested children...")
-					return FormUtil.children.create(child.props.children, onChange)
+					if(props.children == null){
+						let props = {onChange: onChange, sectionIndex: sectionIndex, index: 0}
+						return React.cloneElement(child, props)
+					} else {
+						return FormUtil.children.create(child.props.children, onChange)
+					}
 				}
 			})
 		}

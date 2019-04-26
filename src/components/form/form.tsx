@@ -8,13 +8,12 @@ import {FormUtil, UpdateObj} from "../../utility/formUtil";
 export interface FormProps {
 	title: string
 	formFields?: FormFieldProps[]
-	inputsPerRow?: ColumnRange
+	columns?: ColumnRange
 	
 	submitForm?: (any) => any
 }
 
 export interface FormValues {
-	formFields?: FormFieldProps[] | any
 	formSectionValues?: FormSectionProps[]
 }
 
@@ -27,7 +26,6 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		this.resetForm = this.resetForm.bind(this)
 		this.state = {
 			formSectionValues: props.children === undefined ? [] : PropMapper.mapSectionPropsToState(props.children),
-			formFields: props.formFields === undefined ? [] : props.formFields,
 		}
 	}
 	

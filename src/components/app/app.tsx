@@ -83,20 +83,20 @@ export default class App extends React.Component<AppPageProps, any> {
 		return (
 			<div id="app">
 				<Form title="NEW CONTAINER FORM" submitForm={this.submitForm}>
-					<FormSection title="Subsection 1 Form" inputsPerRow={2}>
-						<FormSection formFields={formProps2} inputsPerRow={2}/>
+					<FormSection title="Subsection 1 Form" columns={2}>
+						<FormSection formFields={formProps2}/>
 						<div>
 							<input type={"text"}/>
 						</div>
-						<FormSection formFields={formProps} inputsPerRow={3}/>
+						<FormSection formFields={formProps} columns={3}/>
 					</FormSection>
-					<FormSection title="Subsection 2 Form" formFields={formProps2} inputsPerRow={2}/>
-					<FormSection title="Subsection 3 Form" formFields={formProps} inputsPerRow={3}/>
+					<FormSection title="Subsection 2 Form" formFields={formProps2} columns={2}/>
+					<FormSection title="Subsection 3 Form" formFields={formProps} columns={3}/>
 				</Form>
 				<Form
 					title={"Braden lika-do-da-cha-cha"}
 					formFields={formProps}
-					inputsPerRow={2}
+					columns={2}
 					submitForm={this.submitForm}
 				/>
 			</div>
