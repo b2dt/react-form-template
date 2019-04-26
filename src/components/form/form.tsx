@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {FormFieldProps} from '../../models/formFieldProps';
 import {ColumnRange} from "../../models/columnRange";
-import * as PropMapper from "../../mappers/propMapper";
 import {FormSectionProps} from "../formSection/formSection";
 import {FormUtil, UpdateObj} from "../../utility/formUtil";
 
@@ -14,7 +13,7 @@ export interface FormProps {
 }
 
 export interface FormValues {
-	formSectionValues?: FormSectionProps[]
+	formSectionValues?: FormSectionProps[] | JSX.Element[]
 }
 
 export default class Form extends React.Component<FormProps, FormValues> {
@@ -25,7 +24,8 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		this.submitLocalForm = this.submitLocalForm.bind(this)
 		this.resetForm = this.resetForm.bind(this)
 		this.state = {
-			formSectionValues: props.children === undefined ? [] : PropMapper.mapSectionPropsToState(props.children),
+			formSectionValues: props.children === undefined ? [] : FormUtil.state.create(props.children, null)
+			// formSectionValues: props.children === undefined ? [] : PropMapper.mapSectionPropsToState(props.children),
 		}
 	}
 	
@@ -48,11 +48,11 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	
 	createForm() {
 		const {props} = this
-		let children = FormUtil.children.create(props.children, this.updateFieldValue)
-		console.log(children)
+		// let children = FormUtil.children.create(props.children, this.updateFieldValue)
+		// console.log(children)
 		return (
 			<div className={"form-field-wrapper"}>
-				{children}
+				{props.children}
 			</div>
 		)
 	}

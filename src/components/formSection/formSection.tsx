@@ -6,6 +6,7 @@ import {UpdateObj} from "../../utility/formUtil";
 
 export interface FormSectionProps {
 	formFields?: FormFieldProps[]
+	formSectionValues?: FormSectionProps[] | JSX.Element[]
 	title?: string
 	columns?: ColumnRange
 	index?: any

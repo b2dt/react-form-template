@@ -21,20 +21,32 @@ export const FormUtil: any = {
 			}
 			return null;
 		},
-		create: (children: JSX.Element[] | any, onChange: any) => {
+		create: (children: JSX.Element[] | any, parentProps: any) => {
 			return React.Children.map(children, (child, sectionIndex) => {
 				const {props} = child
-				if(child.type.name == Types.FORM_SECTION){
-					if(props.children == null) {
-
+				if (child.type == undefined)
+					return child
+				console.log("child type:" + child.type)
+				if (child.type.name != undefined && child.type.name == Types.FORM_SECTION) {
+					if (props.children == null) {
+						console.log("null children")
+						console.log(props)
+						return props
 					} else {
-
+						console.log("not null children")
+						console.log(props)
+						return FormUtil.state.create(props.children, props)
 					}
 				} else {
-					if(props.children == null){
-
+					console.log("Not a form section")
+					if (props.children == null) {
+						console.log("null children")
+						console.log(props)
+						return child
 					} else {
-						return FormUtil.children.create(child.props.children, onChange)
+						console.log("not null children")
+						console.log(props)
+						return FormUtil.state.create(props.children, props)
 					}
 				}
 			})
@@ -44,9 +56,9 @@ export const FormUtil: any = {
 		create: (children: JSX.Element[] | any, onChange: any) => {
 			return React.Children.map(children, (child, sectionIndex) => {
 				const {props} = child
-				if(child.type.name == Types.FORM_SECTION){
+				if (child.type.name == Types.FORM_SECTION) {
 					console.log(props.title)
-					if(props.children == null) {
+					if (props.children == null) {
 						return (
 							<FormSection
 								columns={props.columns}
@@ -66,7 +78,7 @@ export const FormUtil: any = {
 						</FormSection>
 					}
 				} else {
-					if(props.children == null){
+					if (props.children == null) {
 						let props = {onChange: onChange, sectionIndex: sectionIndex, index: 0}
 						return React.cloneElement(child, props)
 					} else {

@@ -88,6 +88,9 @@ export default class App extends React.Component<AppPageProps, any> {
 						<div>
 							<input type={"text"}/>
 						</div>
+						<div>
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus consectetur et libero ac fringilla. Vivamus vitae sem iaculis, semper nunc a, ultricies est. Sed sed ipsum velit. Praesent aliquet dui quis tellus ornare auctor. Mauris eu magna interdum, pretium dui at, porta mi. Maecenas eu condimentum metus. Duis quam nisi, fringilla a augue eu, lacinia tempor magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+						</div>
 						<FormSection formFields={formProps} columns={3}/>
 					</FormSection>
 					<FormSection title="Subsection 2 Form" formFields={formProps2} columns={2}/>
