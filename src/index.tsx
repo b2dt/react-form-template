@@ -8,18 +8,18 @@ import {ValidationType} from "./utility/validation";
 require('./components/app/app.scss')
 
 declare module 'react' {
-	
-	
-	interface HTMLAttributes<T> extends DOMAttributes<T> {
-		validate?: ValidationType | Function;
-		sectionIndex?: number
-		label?: string;
-		type?: string;
-		errormessage?: string;
-	}
+
+
+    interface HTMLAttributes<T> extends DOMAttributes<T> {
+        validate?: ValidationType | Function;
+        index?: number
+        label?: string;
+        type?: string;
+        errormessage?: string;
+    }
 }
 
 ReactDOM.render(
-	<App/>,
-	document.getElementById('root')
+    <App/>,
+    document.getElementById('root')
 )
