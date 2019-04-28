@@ -4,7 +4,7 @@ import {ColumnRange} from "../models/columnRange";
 import classNames from 'classnames'
 import Input from "../components/general/input/input";
 import * as _ from 'lodash'
-import {InputType} from "./formUtil";
+import {FormUtil, InputType} from "./formUtil";
 import FormSection, {FormSectionProps} from "../components/formSection/formSection";
 
 export const sortFieldProps = (formFields: FormFieldProps[]) => {
@@ -28,17 +28,25 @@ export const Convert: any = {
                         </FormSection>
                     )
                 } else {
+                    console.log("TYPE:", props.type, props)
                     let newSection = Convert.to.section(props, index)
+                    console.log("New Section:", newSection)
                     returnElements.push(newSection)
                 }
             })
             console.log("RETURN ELEMENTS: ", returnElements)
             return returnElements
         },
-        section: (formSectionProps: FormSectionProps | any, index: number) => {
-            return (
-                <FormSection {...formSectionProps} key={index}/>
-            )
+        section: (props: FormSectionProps | any, index: number) => {
+            if (FormUtil.typecheck.formSectionProps(props)) {
+                console.log("TYPE FORMSECTION:", props)
+                return (
+                    <FormSection {...props} key={index}/>
+                )
+            } else {
+                console.log("TYPE NOT FORM SECTION:", props)
+                return props
+            }
         },
         checkbox: (buttonProps: FormFieldProps, columnClassName: string, updateFieldVal: any) => {
             let classes = classNames("form-text-input", columnClassName)

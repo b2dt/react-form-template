@@ -48,9 +48,8 @@ export default class Form extends React.Component<FormProps, FormValues> {
 
     createForm() {
         const {state} = this
-        console.log(state.formSectionValues)
         let children = Convert.to.sections(state.formSectionValues)
-        console.log("Converted Children: ",children)
+        console.log("Converted Children: ", children)
         return (
             <div className={"form-field-wrapper"}>
                 {children}

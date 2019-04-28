@@ -6,12 +6,16 @@ import {Convert} from "../../utility/converter";
 
 export interface FormSectionProps {
     formFields?: FormFieldProps[]
-    formSectionValues?: FormSectionProps[] | FormFieldProps[]
+    formSectionValues?: FormSectionProps[] | JSX.Element[]
     title?: string
     columns?: ColumnRange
     index?: any
 
     updateFieldValue?: (x: UpdateObj) => any
+}
+
+function instanceOfA(object: any): object is FormSectionProps {
+    return 'member' in object;
 }
 
 export default class FormSection extends React.Component<FormSectionProps, any> {
@@ -29,6 +33,7 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
     render() {
         const {props} = this
         let formFields = Convert.formFields(props.formFields, props.columns, this.updateFieldValue)
+        console.log("Form Fields", formFields)
         const separator = props.title == null ? "" : (<div className={"title-separator"}/>)
         return (
             <div className={"form-section"}>

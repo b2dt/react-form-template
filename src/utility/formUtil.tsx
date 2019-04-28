@@ -21,6 +21,11 @@ export const enum InputType {
 }
 
 export const FormUtil: any = {
+    typecheck: {
+        formSectionProps: (value: any): value is FormSectionProps => {
+            return true
+        }
+    },
     mapper: {
         element: {
             sections: (children: JSX.Element[] | any, parentSectionProps: FormSectionProps) => {
