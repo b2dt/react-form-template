@@ -42,13 +42,11 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	
 	updateFieldValue(updateObj: UpdateObj) {
 		const {state} = this
-		console.log("UpdatedObj:", updateObj)
 		let copyState: any[] = [...state.formSectionValues]
 		FormUtil.state.update(updateObj, copyState)
 		this.setState({
 			formSectionValues: copyState
 		})
-		console.log("NEW STATE:", copyState)
 	}
 	
 	submitLocalForm() {
@@ -58,7 +56,6 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	
 	createForm() {
 		const {state} = this
-		console.log("BEFORE CONVERSION: ", state.formSectionValues)
 		let children: JSX.Element[] = Convert.to.sections(state.formSectionValues, this.updateFieldValue)
 		return (
 			<div className={"form-field-wrapper"}>

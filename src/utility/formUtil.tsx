@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {FormSectionProps} from "../components/formSection/formSection";
+import * as _ from 'lodash'
 
 export interface UpdateObj {
 	sectionIndices?: number[],
@@ -50,7 +51,7 @@ export const FormUtil: any = {
 		}
 	},
 	state: {
-		update: (fieldInfo: UpdateObj, sectionProps: any[])=> {
+		update: (fieldInfo: UpdateObj, sectionProps: any[]) => {
 			let currIndex = fieldInfo.sectionIndices[0]
 			fieldInfo.sectionIndices.splice(0, 1)
 			let newSectionProps = sectionProps[currIndex]
@@ -68,8 +69,8 @@ export const FormUtil: any = {
 		},
 		sectionProps: (props: FormSectionProps, sectionIndex: number, parentProps: FormSectionProps) => {
 			return {
-				formFields: props.formFields,
-				formSectionValues: props.formSectionValues,
+				formFields: _.cloneDeep(props.formFields),
+				formSectionValues: _.cloneDeep(props.formSectionValues),
 				title: props.title,
 				columns: props.columns == null ? parentProps.columns : props.columns,
 				updateFieldVal: props.updateFieldValue,

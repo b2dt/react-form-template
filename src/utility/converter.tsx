@@ -17,9 +17,8 @@ export const Convert: any = {
 		return sortedFormFields.map(field => (Convert.convert(field, numOfColumns, updateFieldVal)))
 	},
 	to: {
-		sections: (formSectionProps: FormSectionProps[] | JSX.Element[], updateField: any) : JSX.Element[] => {
+		sections: (formSectionProps: FormSectionProps[] | JSX.Element[], updateField: any): JSX.Element[] => {
 			let returnElements = []
-			console.log("IN CONVERSION ATTEMPT: ",formSectionProps)
 			formSectionProps.forEach((props, index) => {
 				if (FormUtil.typecheck.formSection(props)) {
 					returnElements.push(
