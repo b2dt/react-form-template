@@ -1,9 +1,8 @@
 import * as React from 'react'
-import {FormValues} from "../components/form/form";
 import {FormSectionProps} from "../components/formSection/formSection";
 
 export interface UpdateObj {
-	sectionIndex?: number,
+	sectionIndices?: number[],
 	fieldIndex: number,
 	newVal: string
 }
@@ -34,16 +33,14 @@ export const FormUtil: any = {
 						} else {
 							return {
 								...child.props,
-								formSectionValues: FormUtil.mapper.element.sections(child.props.children, child.props)
+								formSectionValues: FormUtil.mapper.element.sections(child.props.children, child.props),
 							}
 						}
 					} else {
 						if (child.props.children == null) {
-							console.log("No Children on current generic node: ", child.type, child)
 							let newProps = {index: sectionIndex}
 							return React.cloneElement(child, newProps)
 						} else {
-							console.log("Children on current generic node: ", child.type, child)
 							let newProps = {index: sectionIndex}
 							return React.cloneElement(child, newProps)
 						}
@@ -53,17 +50,17 @@ export const FormUtil: any = {
 		}
 	},
 	state: {
-		update: (fieldInfo: UpdateObj, formState: FormValues) => {
-			if (fieldInfo.sectionIndex == undefined) { //Means not in a FormSection => no children
+		update: (fieldInfo: UpdateObj, sectionProps: any[])=> {
+			let currIndex = fieldInfo.sectionIndices[0]
+			fieldInfo.sectionIndices.splice(0, 1)
+			let newSectionProps = sectionProps[currIndex]
 			
+			if (newSectionProps.formSectionValues != undefined) {
+				FormUtil.state.update(fieldInfo, newSectionProps.formSectionValues)
+			} else {
+				newSectionProps.formFields[fieldInfo.fieldIndex].defaultText = fieldInfo.newVal
 			}
-			return null;
 		},
-		to: {
-			sections: (state: FormSectionProps[] | JSX.Element[]) => {
-				return null
-			}
-		}
 	},
 	create: {
 		state: (children: JSX.Element[] | any): FormSectionProps => {

@@ -6,83 +6,93 @@ import {FormUtil, UpdateObj} from "../../utility/formUtil";
 import {Convert} from "../../utility/converter";
 
 export interface FormProps {
-    title: string
-    formFields?: FormFieldProps[]
-    columns?: ColumnRange
-
-    submitForm?: (any) => any
+	title: string
+	formFields?: FormFieldProps[]
+	columns?: ColumnRange
+	
+	submitForm?: (any) => any
 }
 
 export interface FormValues {
-    formSectionValues?: FormSectionProps[] | JSX.Element[]
+	formSectionValues?: FormSectionProps[] | JSX.Element[]
 }
 
 export default class Form extends React.Component<FormProps, FormValues> {
-    constructor(props) {
-        super(props);
-        this.updateFieldValue = this.updateFieldValue.bind(this)
-        this.createForm = this.createForm.bind(this)
-        this.submitLocalForm = this.submitLocalForm.bind(this)
-        this.resetForm = this.resetForm.bind(this)
-        this.state = {
-            formSectionValues: props.children === undefined ? [] : FormUtil.create.state(props.children)
-        }
-    }
-
-    componentDidMount(): void {
-    }
-
-    resetForm() {
-
-    }
-
-    updateFieldValue(updateObj: UpdateObj) {
-        const {state} = this
-        console.log(updateObj)
-    }
-
-    submitLocalForm() {
-        const {state} = this
-        console.log("Submit: " + state)
-    }
-
-    createForm() {
-        const {state} = this
-        let children = Convert.to.sections(state.formSectionValues)
-        console.log("Converted Children: ", children)
-        return (
-            <div className={"form-field-wrapper"}>
-                {children}
-            </div>
-        )
-    }
-
-    createButtons() {
-        return (
-            <div className={"button-container"}>
-                <div className={"button form-button"}
-                     onClick={this.submitLocalForm}>
-                    Submit
-                </div>
-                <div className={"button form-button"}
-                     onClick={this.resetForm}>
-                    Reset Form
-                </div>
-            </div>
-        )
-    }
-
-    render(): React.ReactNode {
-        const {props, state} = this
-        let formFields = this.createForm()
-        let buttons = this.createButtons()
-        return (
-            <div className={'form-container'}>
-                <div className={'form-title'}>{props.title}</div>
-                {formFields}
-                <div className={"button-container-separator"}/>
-                {buttons}
-            </div>
-        );
-    }
+	constructor(props) {
+		super(props);
+		this.updateFieldValue = this.updateFieldValue.bind(this)
+		this.createForm = this.createForm.bind(this)
+		this.submitLocalForm = this.submitLocalForm.bind(this)
+		this.resetForm = this.resetForm.bind(this)
+		this.state = {
+			formSectionValues: []
+		}
+	}
+	
+	componentDidMount(): void {
+		const {props} = this
+		this.setState({
+			formSectionValues: props.children === undefined ? [] : FormUtil.create.state(props.children)
+		})
+	}
+	
+	resetForm() {
+	
+	}
+	
+	updateFieldValue(updateObj: UpdateObj) {
+		const {state} = this
+		console.log("UpdatedObj:", updateObj)
+		let copyState: any[] = [...state.formSectionValues]
+		FormUtil.state.update(updateObj, copyState)
+		this.setState({
+			formSectionValues: copyState
+		})
+		console.log("NEW STATE:", copyState)
+	}
+	
+	submitLocalForm() {
+		const {state} = this
+		console.log("Submit: " + state)
+	}
+	
+	createForm() {
+		const {state} = this
+		console.log("BEFORE CONVERSION: ", state.formSectionValues)
+		let children: JSX.Element[] = Convert.to.sections(state.formSectionValues, this.updateFieldValue)
+		return (
+			<div className={"form-field-wrapper"}>
+				{children}
+			</div>
+		)
+	}
+	
+	createButtons() {
+		return (
+			<div className={"button-container"}>
+				<div className={"button form-button"}
+						 onClick={this.submitLocalForm}>
+					Submit
+				</div>
+				<div className={"button form-button"}
+						 onClick={this.resetForm}>
+					Reset Form
+				</div>
+			</div>
+		)
+	}
+	
+	render(): React.ReactNode {
+		const {props, state} = this
+		let formFields = this.createForm()
+		let buttons = this.createButtons()
+		return (
+			<div className={'form-container'}>
+				<div className={'form-title'}>{props.title}</div>
+				{formFields}
+				<div className={"button-container-separator"}/>
+				{buttons}
+			</div>
+		);
+	}
 }

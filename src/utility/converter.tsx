@@ -17,30 +17,19 @@ export const Convert: any = {
 		return sortedFormFields.map(field => (Convert.convert(field, numOfColumns, updateFieldVal)))
 	},
 	to: {
-		sections: (formSectionProps: FormSectionProps[] | JSX.Element[]) => {
+		sections: (formSectionProps: FormSectionProps[] | JSX.Element[], updateField: any) : JSX.Element[] => {
 			let returnElements = []
+			console.log("IN CONVERSION ATTEMPT: ",formSectionProps)
 			formSectionProps.forEach((props, index) => {
-				if (props.formSectionValues != undefined) {
-					let newSections = Convert.to.sections(props.formSectionValues)
+				if (FormUtil.typecheck.formSection(props)) {
 					returnElements.push(
-						<FormSection {...props} key={index}>
-							{newSections}
-						</FormSection>
+						<FormSection {...props} key={index} updateFieldValue={updateField} index={index}/>
 					)
 				} else {
-					returnElements.push(Convert.to.section(props, index))
+					returnElements.push(props)
 				}
 			})
 			return returnElements
-		},
-		section: (props: FormSectionProps | any, index: number) => {
-			if (FormUtil.typecheck.formSection(props)) {
-				return (
-					<FormSection {...props} key={index}/>
-				)
-			} else {
-				return props
-			}
 		},
 		checkbox: (buttonProps: FormFieldProps, columnClassName: string, updateFieldVal: any) => {
 			let classes = classNames("form-text-input", columnClassName)
