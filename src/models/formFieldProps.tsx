@@ -4,7 +4,7 @@ export interface FormFieldProps {
 	id: string
 	inputType: InputType | any
 	index: number
-	
+	classes?: string
 	label?: string
 	
 	sectionIndex?: number

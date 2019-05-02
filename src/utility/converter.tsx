@@ -35,7 +35,7 @@ export const Convert: any = {
 			return
 		},
 		input: (textProps: FormFieldProps, columnClassName: string, updateFieldVal: any) => {
-			let classes = classNames('field', columnClassName)
+			let classes = classNames('field', columnClassName, textProps.classes)
 			let showError = textProps.validation == undefined ? false : !textProps.validation(textProps.defaultText)
 			return (
 				<div className={classes} key={textProps.id}>

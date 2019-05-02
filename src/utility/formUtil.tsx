@@ -57,6 +57,21 @@ export const FormUtil: any = {
 		}
 	},
 	state: {
+		resetProps: (sectionProps: FormSectionProps[] | JSX.Element[]): void => {
+			sectionProps.forEach(props => {
+				FormUtil.state.reset(props)
+			})
+		},
+		reset: (props: FormSectionProps): void => {
+			if (props.formSectionValues != undefined) {
+				FormUtil.state.resetProps(props.formSectionValues)
+			}
+			if (props.formFields != undefined) {
+				props.formFields.forEach(fields => {
+					fields.defaultText = ""
+				})
+			}
+		},
 		updateValue: (fieldInfo: UpdateObj, sectionProps: any[]): void => {
 			let currIndex = fieldInfo.sectionIndices[0]
 			fieldInfo.sectionIndices.splice(0, 1)

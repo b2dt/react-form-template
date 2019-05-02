@@ -37,7 +37,12 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	}
 	
 	resetForm() {
-	
+		const {state} = this
+		let copyState: any[] = [...state.formSectionValues]
+		FormUtil.state.resetProps(state.formSectionValues)
+		this.setState({
+			formSectionValues: copyState
+		})
 	}
 	
 	updateFieldValue(updateObj: UpdateObj) {
