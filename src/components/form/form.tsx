@@ -2,7 +2,7 @@ import * as React from 'react';
 import {FormFieldProps} from '../../models/formFieldProps';
 import {ColumnRange} from "../../models/columnRange";
 import {FormSectionProps} from "../formSection/formSection";
-import {FormUtil, UpdateObj} from "../../utility/formUtil";
+import {FlatState, FormUtil, UpdateObj} from "../../utility/formUtil";
 import {Convert} from "../../utility/converter";
 
 export interface FormProps {
@@ -10,7 +10,7 @@ export interface FormProps {
 	formFields?: FormFieldProps[]
 	columns?: ColumnRange
 	
-	submitForm?: (any) => any
+	submitForm: (any) => any
 }
 
 export interface FormValues {
@@ -43,7 +43,7 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	updateFieldValue(updateObj: UpdateObj) {
 		const {state} = this
 		let copyState: any[] = [...state.formSectionValues]
-		FormUtil.state.update(updateObj, copyState)
+		FormUtil.state.updateValue(updateObj, state.formSectionValues)
 		this.setState({
 			formSectionValues: copyState
 		})
@@ -51,7 +51,13 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	
 	submitLocalForm() {
 		const {state} = this
-		console.log("Submit: " + state)
+		//validate
+		
+		//flatten state
+		let flatState: FlatState[] = FormUtil.state.flatten(state.formSectionValues)
+		console.log("FlattenedState:", flatState)
+		//prop submit of flattened value array
+		this.props.submitForm(flatState)
 	}
 	
 	createForm() {

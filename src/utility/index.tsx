@@ -12,12 +12,4 @@ export const Utility = {
   disablePageScroll: () => document.body.style.overflow = 'hidden',
   enablePageScroll: () => document.body.style.overflow = 'auto',    
   getRand: (min: number, max: number) => Math.floor((Math.random() * max) + min),
-  validate: {
-    zipCode: (zipCd: string) => RegExp("^[0-9]{5}(?:-[0-9]{4})?$").test(zipCd),
-    inspectionQuantity: (quantity: string) => {
-      return !isNaN(parseInt(quantity)) 
-        && parseInt(quantity) > 0 
-        && parseInt(quantity) < 300
-    }
-  }
 }

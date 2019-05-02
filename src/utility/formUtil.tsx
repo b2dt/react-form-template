@@ -1,11 +1,17 @@
 import * as React from 'react'
 import {FormSectionProps} from "../components/formSection/formSection";
 import * as _ from 'lodash'
+import {FormFieldProps} from "../models/formFieldProps";
 
 export interface UpdateObj {
 	sectionIndices?: number[],
 	fieldIndex: number,
 	newVal: string
+}
+
+export interface FlatState {
+	value: string,
+	id: string
 }
 
 export const enum InputType {
@@ -51,17 +57,39 @@ export const FormUtil: any = {
 		}
 	},
 	state: {
-		update: (fieldInfo: UpdateObj, sectionProps: any[]) => {
+		updateValue: (fieldInfo: UpdateObj, sectionProps: any[]): void => {
 			let currIndex = fieldInfo.sectionIndices[0]
 			fieldInfo.sectionIndices.splice(0, 1)
 			let newSectionProps = sectionProps[currIndex]
 			
 			if (newSectionProps.formSectionValues != undefined) {
-				FormUtil.state.update(fieldInfo, newSectionProps.formSectionValues)
+				FormUtil.state.updateValue(fieldInfo, newSectionProps.formSectionValues)
 			} else {
-				newSectionProps.formFields[fieldInfo.fieldIndex].defaultText = fieldInfo.newVal
+				let formField: FormFieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
+				if (!FormUtil.validate(formField))
+					formField.showError = true
+				else
+					formField.showError = false
+				
+				formField.defaultText = fieldInfo.newVal
 			}
 		},
+		flatten: (formProps: FormSectionProps[] | JSX.Element[]): FlatState[] => {
+			let flatState: FlatState[] = []
+			formProps.forEach(props => {
+				if (props.formSectionValues == undefined) {
+					props.formFields.forEach(field => {
+						flatState.push({
+							value: field.defaultText,
+							id: field.id,
+						})
+					})
+				} else {
+					_.merge(flatState, FormUtil.state.flatten(props.formSectionValues))
+				}
+			})
+			return flatState
+		}
 	},
 	create: {
 		state: (children: JSX.Element[] | any): FormSectionProps => {
@@ -78,5 +106,7 @@ export const FormUtil: any = {
 			}
 		},
 	},
-	validate: {}
+	validate: (formProps: FormFieldProps): boolean => {
+		return false
+	}
 }

@@ -7,7 +7,9 @@ export interface InputProps {
 	index?: number
 	classes?: string
 	label?: string
-	error?: string
+	showError?: boolean
+	errorMsg?: string
+	validationFn?: (input: string) => boolean
 	inputProps?: InputAttributes
 	
 	updateFieldValue?: (x: UpdateObj) => any
@@ -18,6 +20,7 @@ export default class Input extends React.Component<InputProps, any> {
 		super(props)
 		this.localOnChange = this.localOnChange.bind(this)
 		this.handleNewProps = this.handleNewProps.bind(this)
+		this.createErrorHtml = this.createErrorHtml.bind(this)
 	}
 	
 	componentDidMount(): void {
@@ -54,6 +57,17 @@ export default class Input extends React.Component<InputProps, any> {
 		}
 	}
 	
+	createErrorHtml() {
+		const {props} = this
+		if (props.showError) {
+			let error = props.errorMsg ? props.errorMsg : "Invalid Input"
+			return (
+				<h1 className="input__error">{error}</h1>
+			)
+		}
+		return ""
+	}
+	
 	render() {
 		const {props} = this,
 			id = this.handleOptional("id", null),
@@ -63,14 +77,14 @@ export default class Input extends React.Component<InputProps, any> {
 				</div>
 			) : null,
 			classes = this.handleOptional("classes", "input", true),
-			error = this.handleOptional("error", "Invalid input"),
-			newProps = this.handleNewProps()
+			newProps = this.handleNewProps(),
+			errorMsg = this.createErrorHtml()
 		return (
 			<div id={id} className={classes}>
 				{label}
 				<div className="input__field">
 					<input {...newProps}/>
-					<h1 className="input__error">{error}</h1>
+					{errorMsg}
 				</div>
 			</div>
 		)

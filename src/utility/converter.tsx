@@ -4,7 +4,7 @@ import {ColumnRange} from "../models/columnRange";
 import classNames from 'classnames'
 import Input from "../components/general/input/input";
 import * as _ from 'lodash'
-import {FormUtil, InputType} from "./formUtil";
+import {FlatState, FormUtil, InputType} from "./formUtil";
 import FormSection, {FormSectionProps} from "../components/formSection/formSection";
 
 export const sortFieldProps = (formFields: FormFieldProps[]) => {
@@ -36,6 +36,7 @@ export const Convert: any = {
 		},
 		input: (textProps: FormFieldProps, columnClassName: string, updateFieldVal: any) => {
 			let classes = classNames('field', columnClassName)
+			let showError = textProps.validation == undefined ? false : !textProps.validation(textProps.defaultText)
 			return (
 				<div className={classes} key={textProps.id}>
 					<Input
@@ -44,6 +45,9 @@ export const Convert: any = {
 						label={textProps.label}
 						index={textProps.index}
 						updateFieldValue={updateFieldVal}
+						errorMsg={textProps.errorMsg}
+						showError={showError}
+						validationFn={textProps.validation}
 						inputProps={{
 							type: "text",
 							placeholder: textProps.placeholder,
@@ -75,5 +79,16 @@ export const Convert: any = {
 			return Convert.to.textarea(formProp, columnClassName, updateFieldVal)
 		else if (formProp.inputType == InputType.CHECKBOX)
 			return Convert.to.checkbox(formProp, columnClassName, updateFieldVal)
+	},
+	flatState: {
+		to: {
+			json: (flatState: FlatState[]) => {
+				let obj = {}
+				flatState.map(state => {
+					obj[state.id] = state.value
+				})
+				return obj
+			}
+		}
 	}
 }

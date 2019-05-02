@@ -1,8 +1,10 @@
 import * as React from 'react'
 import Form from '../form/form';
 import FormSection from "../formSection/formSection";
+import {FlatState, InputType} from "../../utility/formUtil";
+import {Convert} from "../../utility/converter";
+import {Validate} from "../../utility/validation";
 import {FormFieldProps} from "../../models/formFieldProps";
-import {InputType} from "../../utility/formUtil";
 
 export interface AppPageProps {
 
@@ -22,25 +24,28 @@ export default class App extends React.Component<AppPageProps, any> {
 	
 	}
 	
-	submitForm(formFields: FormFieldProps[]) {
-		console.log(formFields)
+	submitForm(form: FlatState[]) {
+		let jsonForm = Convert.flatState.to.json(form)
+		console.log(jsonForm)
 	}
 	
 	render() {
 		const {props} = this
-		const formProps = [
+		const formProps: FormFieldProps[] = [
 			{
 				index: 0,
 				id: "rus-first-name",
 				required: true,
 				inputType: InputType.INPUT,
 				placeholder: "BRONTS",
+				defaultText: "TESTING",
 				label: "First Name"
 			}, {
 				index: 1,
 				id: "rus-last-name",
 				required: true,
 				inputType: InputType.INPUT,
+				defaultText: "TESTING",
 				label: "Last Name"
 			}, {
 				index: 2,
@@ -51,16 +56,20 @@ export default class App extends React.Component<AppPageProps, any> {
 				label: "User Id"
 			}
 		]
-		const formProps2 = [
+		const formProps2: FormFieldProps[] = [
 			{
 				index: 0,
 				id: "zip",
 				required: true,
+				defaultText: "TESTING",
 				inputType: InputType.INPUT,
+				validation: Validate.zipCode,
+				errorMsg: "Zip code requires 5 characters and only numbers",
 				label: "Zip"
 			}, {
 				index: 1,
 				id: "street",
+				defaultText: "TESTING",
 				required: true,
 				inputType: InputType.INPUT,
 				label: "Street"
@@ -84,7 +93,7 @@ export default class App extends React.Component<AppPageProps, any> {
 				<Form title="NEW CONTAINER FORM" submitForm={this.submitForm}>
 					<FormSection title="Subsection 1 Form" columns={2}>
 						<FormSection formFields={formProps2}/>
-					{/*	<div>
+						{/*	<div>
 							<input id={"testing-stuff"} type={"text"}/>
 						</div>
 						<div>

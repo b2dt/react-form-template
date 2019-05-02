@@ -35,9 +35,10 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 		let formFields = Convert.formFields(props.formFields, props.columns, this.updateFieldValue)
 		let children = props.formSectionValues ? Convert.to.sections(props.formSectionValues, this.updateFieldValue) : ""
 		const separator = props.title == null ? "" : (<div className={"title-separator"}/>)
+		const title = props.title == null ? "" : (<div className={"form-section-title"}>{props.title}</div>)
 		return (
 			<div className={"form-section"}>
-				<div className={"form-section-title"}>{props.title}</div>
+				{title}
 				{separator}
 				{formFields}
 				{children}

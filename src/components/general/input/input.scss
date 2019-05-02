@@ -1,7 +1,8 @@
-.input{
+.input {
   width: 100%;
-  .input__label{
-    h1{
+
+  .input__label {
+    h1 {
       color: $blue;
       font-size: 1em;
       font-weight: 400;
@@ -11,9 +12,10 @@
     }
   }
 
-  .input__field{
+  .input__field {
     width: 100%;
-    input{
+
+    input {
       background-color: $offWhite;
       border: 1px solid gray(220);
       border-radius: 100px;
@@ -24,20 +26,19 @@
       padding: 10px 20px;
       width: calc(100% - 42px);
 
-      &:focus{
+      &:focus {
         background-color: rgba($blue, 0.15);
       }
 
-      &:invalid{
-        + .input__error{
+      &:invalid {
+        + .input__error {
           display: block;
         }
       }
     }
 
-    .input__error{
+    .input__error {
       color: $red;
-      display: none;
       font-size: 0.8em;
       font-weight: 400;
       margin: 0px;
