@@ -3,6 +3,7 @@ import {FormFieldProps} from "../../models/formFieldProps";
 import {ColumnRange} from "../../models/columnRange";
 import {UpdateObj} from "../../utility/formUtil";
 import {Convert} from "../../utility/converter";
+import {FormFunctions} from "../form/form";
 
 export interface FormSectionProps {
 	formFields?: FormFieldProps[]
@@ -10,8 +11,7 @@ export interface FormSectionProps {
 	title?: string
 	columns?: ColumnRange
 	index?: number
-	
-	updateFieldValue?: (x: UpdateObj) => any
+	formFunctions?: FormFunctions
 }
 
 export default class FormSection extends React.Component<FormSectionProps, any> {
@@ -27,13 +27,16 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 		else
 			updateObj.sectionIndices = [props.index]
 		
-		this.props.updateFieldValue(updateObj)
+		this.props.formFunctions.updateFieldVal(updateObj)
 	}
 	
 	render() {
 		const {props} = this
-		let formFields = Convert.formFields(props.formFields, props.columns, this.updateFieldValue)
-		let children = props.formSectionValues ? Convert.to.sections(props.formSectionValues, this.updateFieldValue) : ""
+		let formFns: FormFunctions = {
+			updateFieldVal: this.updateFieldValue
+		}
+		let formFields = Convert.formFields(props.formFields, props.columns, formFns)
+		let children = props.formSectionValues ? Convert.to.sections(props.formSectionValues, formFns) : ""
 		const separator = props.title == null ? "" : (<div className={"title-separator"}/>)
 		const title = props.title == null ? "" : (<div className={"form-section-title"}>{props.title}</div>)
 		return (

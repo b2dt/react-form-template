@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {InputAttributes} from '../../../models/inputAttributes'
 import {UpdateObj} from "../../../utility/formUtil";
+import {FormFunctions} from "../../form/form";
 
 export interface InputProps {
 	id?: string
@@ -9,10 +10,10 @@ export interface InputProps {
 	label?: string
 	showError?: boolean
 	errorMsg?: string
-	validationFn?: (input: string) => boolean
 	inputProps?: InputAttributes
 	
-	updateFieldValue?: (x: UpdateObj) => any
+	formFns: FormFunctions
+	validationFn?: (input: string) => boolean
 }
 
 export default class Input extends React.Component<InputProps, any> {
@@ -32,7 +33,7 @@ export default class Input extends React.Component<InputProps, any> {
 			fieldIndex: props.index,
 			newVal: e.target.value
 		}
-		props.updateFieldValue(fieldUpdateObj)
+		props.formFns.updateFieldVal(fieldUpdateObj)
 	}
 	
 	handleOptional(prop: string, defaultValue: any = null, appendDefaultValue: boolean = false) {
@@ -48,7 +49,7 @@ export default class Input extends React.Component<InputProps, any> {
 			{inputProps} = props
 		return {
 			type: inputProps.type,
-			defaultValue: inputProps.defaultValue,
+			value: inputProps.defaultValue == "" ? "" : inputProps.defaultValue,
 			placeholder: inputProps.placeholder,
 			pattern: inputProps.pattern,
 			min: inputProps.min,

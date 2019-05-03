@@ -2,6 +2,7 @@ import * as React from 'react'
 import {FormSectionProps} from "../components/formSection/formSection";
 import * as _ from 'lodash'
 import {FormFieldProps} from "../models/formFieldProps";
+import {Action} from "../components/form/form";
 
 export interface UpdateObj {
 	sectionIndices?: number[],
@@ -11,7 +12,8 @@ export interface UpdateObj {
 
 export interface FlatState {
 	value: string,
-	id: string
+	id: string,
+	error: boolean
 }
 
 export const enum InputType {
@@ -72,21 +74,24 @@ export const FormUtil: any = {
 				})
 			}
 		},
-		updateValue: (fieldInfo: UpdateObj, sectionProps: any[]): void => {
+		updateValue: (fieldInfo: UpdateObj, sectionProps: any[]): Action => {
 			let currIndex = fieldInfo.sectionIndices[0]
 			fieldInfo.sectionIndices.splice(0, 1)
 			let newSectionProps = sectionProps[currIndex]
 			
 			if (newSectionProps.formSectionValues != undefined) {
-				FormUtil.state.updateValue(fieldInfo, newSectionProps.formSectionValues)
+				return FormUtil.state.updateValue(fieldInfo, newSectionProps.formSectionValues)
 			} else {
 				let formField: FormFieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
-				if (!FormUtil.validate(formField))
-					formField.showError = true
-				else
-					formField.showError = false
-				
+				let isValidInput: boolean = !FormUtil.validate(formField)
+				let action: Action = Action.NONE
+				if (formField.showError != isValidInput) {
+					action = isValidInput ? Action.INCREASE : Action.DECEASE
+					console.log("showError:", formField.showError, "isValidInput:", )
+				}
+				formField.showError = isValidInput
 				formField.defaultText = fieldInfo.newVal
+				return action
 			}
 		},
 		flatten: (formProps: FormSectionProps[] | JSX.Element[]): FlatState[] => {
@@ -97,6 +102,7 @@ export const FormUtil: any = {
 						flatState.push({
 							value: field.defaultText,
 							id: field.id,
+							error: field.showError
 						})
 					})
 				} else {
@@ -116,7 +122,7 @@ export const FormUtil: any = {
 				formSectionValues: _.cloneDeep(props.formSectionValues),
 				title: props.title,
 				columns: props.columns == null ? parentProps.columns : props.columns,
-				updateFieldVal: props.updateFieldValue,
+				formFunctions: props.formFunctions,
 				index: sectionIndex
 			}
 		},
