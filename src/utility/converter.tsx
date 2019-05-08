@@ -37,7 +37,6 @@ export const Convert: any = {
 		},
 		input: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames('field', columnClassName, textProps.classes)
-			let showError = textProps.validation == undefined ? false : !textProps.validation(textProps.defaultText)
 			return (
 				<div className={classes} key={textProps.id}>
 					<Input
@@ -47,7 +46,8 @@ export const Convert: any = {
 						index={textProps.index}
 						formFns={formFns}
 						errorMsg={textProps.errorMsg}
-						showError={showError}
+						showError={textProps.showError}
+						required={textProps.required}
 						validationFn={textProps.validation}
 						inputProps={{
 							type: "text",

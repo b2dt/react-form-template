@@ -26,6 +26,10 @@
       padding: 10px 20px;
       width: calc(100% - 42px);
 
+      &.input-error-border {
+        border: 1px solid $red
+      }
+
       &:focus {
         background-color: rgba($blue, 0.15);
       }

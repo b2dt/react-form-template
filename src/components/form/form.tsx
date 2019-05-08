@@ -16,19 +16,12 @@ export interface FormProps {
 
 export interface FormValues {
 	formSectionValues?: FormSectionProps[] | JSX.Element[]
-	formErrorCount: number
-	submissionErrorMsg: string
-	formFns: FormFunctions
+	formFns: FormFunctions,
+	formErrorMsg: string
 }
 
 export interface FormFunctions {
 	updateFieldVal: (input: UpdateObj) => any
-}
-
-export enum Action {
-	INCREASE,
-	DECEASE,
-	NONE
 }
 
 export default class Form extends React.Component<FormProps, FormValues> {
@@ -38,16 +31,13 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		this.createForm = this.createForm.bind(this)
 		this.submitLocalForm = this.submitLocalForm.bind(this)
 		this.resetForm = this.resetForm.bind(this)
-		this.increaseErrorCount = this.increaseErrorCount.bind(this)
-		this.decreaseErrorCount = this.decreaseErrorCount.bind(this)
-		this.decreaseErrorCount = this.decreaseErrorCount.bind(this)
+		this.createErrorMsg = this.createErrorMsg.bind(this)
 		this.state = {
 			formSectionValues: [],
-			formErrorCount: 0,
-			submissionErrorMsg: "",
 			formFns: {
 				updateFieldVal: this.updateFieldValue,
-			}
+			},
+			formErrorMsg: ""
 		}
 	}
 	
@@ -55,31 +45,6 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		const {props} = this
 		this.setState({
 			formSectionValues: props.children === undefined ? [] : FormUtil.create.state(props.children)
-		})
-	}
-	
-	updateErrorCount(action: Action) {
-		if (action == Action.INCREASE)
-			this.increaseErrorCount()
-		else if (action == Action.DECEASE)
-			this.decreaseErrorCount()
-		else
-			return
-	}
-	
-	increaseErrorCount() {
-		const {state} = this
-		console.log("increasing")
-		this.setState({
-			formErrorCount: state.formErrorCount + 1
-		})
-	}
-	
-	decreaseErrorCount() {
-		const {state} = this
-		console.log("decreasing")
-		this.setState({
-			formErrorCount: state.formErrorCount - 1
 		})
 	}
 	
@@ -95,27 +60,28 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	updateFieldValue(updateObj: UpdateObj) {
 		const {state} = this
 		let copyState: any[] = [...state.formSectionValues]
-		let action: Action = FormUtil.state.updateValue(updateObj, state.formSectionValues)
-		console.log("Updating error count:", action)
-		this.updateErrorCount(action)
+		FormUtil.state.updateValue(updateObj, state.formSectionValues)
 		this.setState({
 			formSectionValues: copyState
 		})
+		console.log(copyState)
 	}
 	
 	submitLocalForm() {
 		const {state, props} = this
+		console.log("State:", state.formSectionValues)
 		let flatState: FlatState[] = FormUtil.state.flatten(state.formSectionValues)
 		console.log("FlattenedState:", flatState)
-		if (state.formErrorCount > 0) {
-			let errorStr: string = props.submissionErrorMsg + ": " + state.formErrorCount + " errors in form."
+		let errors: FlatState[] = flatState.filter(state => state.error == true)
+		if (errors.length == 0) {
+			props.submitForm(flatState)
+		} else {
 			this.setState({
-				formErrorCount: state.formErrorCount,
-				submissionErrorMsg: errorStr
+				formErrorMsg: "Error(s) on Form: " + errors.length + " Errors"
 			})
 		}
 		//prop submit of flattened value array
-		this.props.submitForm(flatState)
+		
 	}
 	
 	createForm() {
@@ -143,17 +109,28 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		)
 	}
 	
+	createErrorMsg(): any {
+		const {state} = this
+		if (state.formErrorMsg != "") {
+			return (
+				<h1 className="form-error">{state.formErrorMsg}</h1>
+			)
+		} else
+			return ("")
+	}
+	
 	render(): React.ReactNode {
-		const {props, state} = this
+		const {props} = this
 		let formFields = this.createForm()
 		let buttons = this.createButtons()
-		console.log(state.formErrorCount)
+		let errorMsg = this.createErrorMsg()
 		return (
 			<div className={'form-container'}>
 				<div className={'form-title'}>{props.title}</div>
 				{formFields}
 				<div className={"button-container-separator"}/>
 				{buttons}
+				{errorMsg}
 			</div>
 		);
 	}

@@ -98,5 +98,13 @@
   }
 }
 
+.form-error {
+  color: $red;
+  font-size: 1.0em;
+  font-weight: 400;
+  width: fit-content;
+  margin: auto;
+}
+
 //TODO setup media-queries in order to make the forms look fine based on size
 //never go above requested column param, but scale columns down as page gets smaller.

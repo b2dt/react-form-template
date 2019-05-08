@@ -2,6 +2,7 @@ import * as React from 'react'
 import {InputAttributes} from '../../../models/inputAttributes'
 import {UpdateObj} from "../../../utility/formUtil";
 import {FormFunctions} from "../../form/form";
+import classNames from 'classnames'
 
 export interface InputProps {
 	id?: string
@@ -11,6 +12,7 @@ export interface InputProps {
 	showError?: boolean
 	errorMsg?: string
 	inputProps?: InputAttributes
+	required?: boolean
 	
 	formFns: FormFunctions
 	validationFn?: (input: string) => boolean
@@ -60,8 +62,8 @@ export default class Input extends React.Component<InputProps, any> {
 	
 	createErrorHtml() {
 		const {props} = this
-		if (props.showError && props.inputProps.defaultValue != "") {
-			let error = props.errorMsg ? props.errorMsg : "Invalid Input"
+		if ((props.showError && props.inputProps.defaultValue != "") || (props.required && props.inputProps.defaultValue.trim() == "")) {
+			let error = props.errorMsg ? props.errorMsg : props.required ? "This field is required!" : "Invalid Input"
 			return (
 				<h1 className="input__error">{error}</h1>
 			)
@@ -74,17 +76,18 @@ export default class Input extends React.Component<InputProps, any> {
 			id = this.handleOptional("id", null),
 			label = props.label ? (
 				<div className="input__label">
-					<h1>{props.label}</h1>
+					<h1>{props.label}{props.required ? "*" : ""}</h1>
 				</div>
-			) : null,
+			) : "",
 			classes = this.handleOptional("classes", "input", true),
 			newProps = this.handleNewProps(),
-			errorMsg = this.createErrorHtml()
+			errorMsg = this.createErrorHtml(),
+			inputClasses = classNames({"input-error-border": errorMsg != ""})
 		return (
 			<div id={id} className={classes}>
 				{label}
 				<div className="input__field">
-					<input {...newProps}/>
+					<input className={inputClasses} {...newProps}/>
 					{errorMsg}
 				</div>
 			</div>

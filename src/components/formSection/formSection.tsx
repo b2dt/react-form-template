@@ -27,7 +27,7 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 		else
 			updateObj.sectionIndices = [props.index]
 		
-		this.props.formFunctions.updateFieldVal(updateObj)
+		props.formFunctions.updateFieldVal(updateObj)
 	}
 	
 	render() {

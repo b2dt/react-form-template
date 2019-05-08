@@ -2,7 +2,6 @@ import * as React from 'react'
 import {FormSectionProps} from "../components/formSection/formSection";
 import * as _ from 'lodash'
 import {FormFieldProps} from "../models/formFieldProps";
-import {Action} from "../components/form/form";
 
 export interface UpdateObj {
 	sectionIndices?: number[],
@@ -74,24 +73,19 @@ export const FormUtil: any = {
 				})
 			}
 		},
-		updateValue: (fieldInfo: UpdateObj, sectionProps: any[]): Action => {
+		updateValue: (fieldInfo: UpdateObj, sectionProps: any[]) => {
 			let currIndex = fieldInfo.sectionIndices[0]
 			fieldInfo.sectionIndices.splice(0, 1)
 			let newSectionProps = sectionProps[currIndex]
 			
 			if (newSectionProps.formSectionValues != undefined) {
-				return FormUtil.state.updateValue(fieldInfo, newSectionProps.formSectionValues)
+				FormUtil.state.updateValue(fieldInfo, newSectionProps.formSectionValues)
 			} else {
 				let formField: FormFieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
-				let isValidInput: boolean = !FormUtil.validate(formField)
-				let action: Action = Action.NONE
-				if (formField.showError != isValidInput) {
-					action = isValidInput ? Action.INCREASE : Action.DECEASE
-					console.log("showError:", formField.showError, "isValidInput:", )
-				}
-				formField.showError = isValidInput
 				formField.defaultText = fieldInfo.newVal
-				return action
+				formField.showError = !FormUtil.validate(formField, fieldInfo.newVal)
+				console.log("Updating field: ", formField)
+				return formField
 			}
 		},
 		flatten: (formProps: FormSectionProps[] | JSX.Element[]): FlatState[] => {
@@ -118,7 +112,7 @@ export const FormUtil: any = {
 		},
 		sectionProps: (props: FormSectionProps, sectionIndex: number, parentProps: FormSectionProps) => {
 			return {
-				formFields: _.cloneDeep(props.formFields),
+				formFields: FormUtil.create.formFields(props.formFields),
 				formSectionValues: _.cloneDeep(props.formSectionValues),
 				title: props.title,
 				columns: props.columns == null ? parentProps.columns : props.columns,
@@ -126,8 +120,21 @@ export const FormUtil: any = {
 				index: sectionIndex
 			}
 		},
+		formFields: (formFields: FormFieldProps[]) => {
+			return _.cloneDeep(formFields).map(field => {
+				return {
+					...field,
+					showError: field.validation != undefined ? !field.validation(field.defaultText) : false
+				}
+			})
+		}
 	},
-	validate: (formProps: FormFieldProps): boolean => {
-		return false
+	validate: (formProps: FormFieldProps, newVal: string): boolean => {
+		console.log(formProps.required && newVal.trim() != "")
+		if (formProps.validation != undefined) {
+			return formProps.validation(newVal) && (formProps.required && newVal.trim() != "")
+		} else {
+			return formProps.required && newVal != ""
+		}
 	}
 }
