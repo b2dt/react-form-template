@@ -84,9 +84,22 @@ export const FormUtil: any = {
 				let formField: FormFieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
 				formField.defaultText = fieldInfo.newVal
 				formField.showError = !FormUtil.validate(formField, fieldInfo.newVal)
-				console.log("Updating field: ", formField)
 				return formField
 			}
+		},
+		updateErrors: (sectionProps: FormSectionProps[]) => {
+			console.log("BEFORE UPDATE", sectionProps)
+			sectionProps.forEach(sectProps => {
+				if (sectProps.formSectionValues != undefined) {
+					FormUtil.state.updateErrors(sectProps.formSectionValues)
+				}
+				if (sectProps.formFields != undefined) {
+					sectProps.formFields.map(field => {
+						field.showError = !FormUtil.validate(field, field.defaultText)
+					})
+				}
+			})
+			console.log("AFTER ERROR UPDATE", sectionProps)
 		},
 		flatten: (formProps: FormSectionProps[] | JSX.Element[]): FlatState[] => {
 			let flatState: FlatState[] = []
@@ -112,7 +125,7 @@ export const FormUtil: any = {
 		},
 		sectionProps: (props: FormSectionProps, sectionIndex: number, parentProps: FormSectionProps) => {
 			return {
-				formFields: FormUtil.create.formFields(props.formFields),
+				formFields: _.cloneDeep(props.formFields),
 				formSectionValues: _.cloneDeep(props.formSectionValues),
 				title: props.title,
 				columns: props.columns == null ? parentProps.columns : props.columns,
@@ -120,21 +133,11 @@ export const FormUtil: any = {
 				index: sectionIndex
 			}
 		},
-		formFields: (formFields: FormFieldProps[]) => {
-			return _.cloneDeep(formFields).map(field => {
-				return {
-					...field,
-					showError: field.validation != undefined ? !field.validation(field.defaultText) : false
-				}
-			})
-		}
 	},
 	validate: (formProps: FormFieldProps, newVal: string): boolean => {
-		console.log(formProps.required && newVal.trim() != "")
 		if (formProps.validation != undefined) {
-			return formProps.validation(newVal) && (formProps.required && newVal.trim() != "")
-		} else {
-			return formProps.required && newVal != ""
-		}
+			return formProps.validation(newVal)
+		} else
+			return true
 	}
 }

@@ -9,7 +9,6 @@ export interface FormFieldProps {
 	
 	sectionIndex?: number
 	value?: string
-	required?: boolean
 	validation?: (input: string) => boolean
 	showError?: boolean
 	errorMsg?: string

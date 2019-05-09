@@ -7,6 +7,7 @@ import * as _ from 'lodash'
 import {FlatState, FormUtil, InputType} from "./formUtil";
 import FormSection, {FormSectionProps} from "../components/formSection/formSection";
 import {FormFunctions} from "../components/form/form";
+import {ValidationType} from "./validation";
 
 export const sortFieldProps = (formFields: FormFieldProps[]) => {
 	return _.sortBy(formFields, (field) => field.index)
@@ -37,6 +38,7 @@ export const Convert: any = {
 		},
 		input: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames('field', columnClassName, textProps.classes)
+			let required = textProps.validation != undefined && textProps.validation.name == ValidationType.Required
 			return (
 				<div className={classes} key={textProps.id}>
 					<Input
@@ -47,7 +49,7 @@ export const Convert: any = {
 						formFns={formFns}
 						errorMsg={textProps.errorMsg}
 						showError={textProps.showError}
-						required={textProps.required}
+						required={required}
 						validationFn={textProps.validation}
 						inputProps={{
 							type: "text",

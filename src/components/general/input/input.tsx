@@ -62,8 +62,8 @@ export default class Input extends React.Component<InputProps, any> {
 	
 	createErrorHtml() {
 		const {props} = this
-		if ((props.showError && props.inputProps.defaultValue != "") || (props.required && props.inputProps.defaultValue.trim() == "")) {
-			let error = props.errorMsg ? props.errorMsg : props.required ? "This field is required!" : "Invalid Input"
+		if (props.showError) {
+			let error = props.errorMsg ? props.errorMsg : props.required ? "This field is required" : "Invalid Input"
 			return (
 				<h1 className="input__error">{error}</h1>
 			)
