@@ -69,13 +69,15 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	submitLocalForm() {
 		const {state, props} = this
 		let copyState: any[] = [...state.formSectionValues]
+		
 		FormUtil.state.updateErrors(copyState)
 		this.setState({
 			formSectionValues: copyState
 		})
-		console.log("State:", state.formSectionValues)
+		
 		let flatState: FlatState[] = FormUtil.state.flatten(state.formSectionValues)
 		console.log("FlattenedState:", flatState)
+		
 		let errors: FlatState[] = flatState.filter(state => state.error == true)
 		if (errors.length == 0) {
 			props.submitForm(flatState)

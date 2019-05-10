@@ -88,7 +88,6 @@ export const FormUtil: any = {
 			}
 		},
 		updateErrors: (sectionProps: FormSectionProps[]) => {
-			console.log("BEFORE UPDATE", sectionProps)
 			sectionProps.forEach(sectProps => {
 				if (sectProps.formSectionValues != undefined) {
 					FormUtil.state.updateErrors(sectProps.formSectionValues)
@@ -99,7 +98,6 @@ export const FormUtil: any = {
 					})
 				}
 			})
-			console.log("AFTER ERROR UPDATE", sectionProps)
 		},
 		flatten: (formProps: FormSectionProps[] | JSX.Element[]): FlatState[] => {
 			let flatState: FlatState[] = []
@@ -136,6 +134,7 @@ export const FormUtil: any = {
 	},
 	validate: (formProps: FormFieldProps, newVal: string): boolean => {
 		if (formProps.validation != undefined) {
+			console.log("Validating...", formProps.validation)
 			return formProps.validation(newVal)
 		} else
 			return true

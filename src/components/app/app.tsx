@@ -55,9 +55,8 @@ export default class App extends React.Component<AppPageProps, any> {
 			{
 				index: 0,
 				id: "zip",
-				defaultText: "TESTING",
 				inputType: InputType.INPUT,
-				validation: Validate.zipCode,
+				validation: (input: string) => Validate.required(input) && Validate.zipCode(input),
 				errorMsg: "Zip code requires 5 characters and only numbers",
 				label: "Zip"
 			}, {
