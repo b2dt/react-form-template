@@ -5,6 +5,7 @@ import {FlatState, InputType} from "../../utility/formUtil";
 import {Convert} from "../../utility/converter";
 import {Validate} from "../../utility/validation";
 import {FormFieldProps} from "../../models/formFieldProps";
+import {CheckboxState} from "../general/checkbox/checkbox";
 
 export interface AppPageProps {
 
@@ -49,15 +50,27 @@ export default class App extends React.Component<AppPageProps, any> {
 				inputType: InputType.INPUT,
 				placeholder: "tso5912",
 				label: "User Id"
-			}
+			}, {
+				index: 3,
+				id: "doggos",
+				inputType: InputType.CHECKBOX,
+				defaultText: CheckboxState.CHECKED,
+				label: "Has Dogg"
+			}, {
+				index: 4,
+				id: "doggos-2",
+				inputType: InputType.CHECKBOX,
+				defaultText: CheckboxState.UNCHECKED,
+				label: "Has Dogg"
+			},
 		]
 		const formProps2: FormFieldProps[] = [
 			{
 				index: 0,
 				id: "zip",
 				inputType: InputType.INPUT,
-				validation: (input: string) => Validate.required(input) && Validate.zipCode(input),
-				errorMsg: "Zip code requires 5 characters and only numbers",
+				validation: Validate.zipCodeRequired,
+				errorMsg: "Please enter a Valid Zipcode",
 				label: "Zip"
 			}, {
 				index: 1,

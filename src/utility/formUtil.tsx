@@ -134,7 +134,6 @@ export const FormUtil: any = {
 	},
 	validate: (formProps: FormFieldProps, newVal: string): boolean => {
 		if (formProps.validation != undefined) {
-			console.log("Validating...", formProps.validation)
 			return formProps.validation(newVal)
 		} else
 			return true

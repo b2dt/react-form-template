@@ -8,6 +8,7 @@ import {FlatState, FormUtil, InputType} from "./formUtil";
 import FormSection, {FormSectionProps} from "../components/formSection/formSection";
 import {FormFunctions} from "../components/form/form";
 import {ValidationType} from "./validation";
+import Checkbox, {CheckboxState} from "../components/general/checkbox/checkbox";
 
 export const sortFieldProps = (formFields: FormFieldProps[]) => {
 	return _.sortBy(formFields, (field) => field.index)
@@ -32,9 +33,20 @@ export const Convert: any = {
 			})
 			return returnElements
 		},
-		checkbox: (buttonProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
-			let classes = classNames("form-text-input", columnClassName)
-			return
+		checkbox: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
+			let classes = classNames("field", columnClassName)
+			let toggled: boolean = textProps.defaultText == CheckboxState.CHECKED
+			return (
+				<div className={classes} key={textProps.id}>
+					<Checkbox
+						id={textProps.id}
+						label={textProps.label}
+						toggled={toggled}
+						onToggle={formFns.updateFieldVal}
+						index={textProps.index}
+					/>
+				</div>
+			)
 		},
 		input: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames('field', columnClassName, textProps.classes)
@@ -61,13 +73,13 @@ export const Convert: any = {
 			)
 		},
 		button: (buttonProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
-			let classes = classNames("form-text-input", columnClassName)
+			let classes = classNames("field", columnClassName)
 		},
 		dropdown: (dropdownProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
-			let classes = classNames("form-text-input", columnClassName)
+			let classes = classNames("field", columnClassName)
 		},
 		textarea: (textAreaProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
-			let classes = classNames("form-text-input", columnClassName)
+			let classes = classNames("field", columnClassName)
 		}
 	},
 	convert: (formProp: FormFieldProps, numOfColumns: ColumnRange, formFns: FormFunctions) => {
