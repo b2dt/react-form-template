@@ -18,10 +18,17 @@ export interface FormValues {
 	formSectionValues?: FormSectionProps[] | JSX.Element[]
 	formFns: FormFunctions,
 	formErrorMsg: string
+	classes: StyleClasses
 }
 
 export interface FormFunctions {
 	updateFieldVal: (input: UpdateObj) => any
+}
+
+export interface StyleClasses {
+	submitBtn: string
+	resetBtn: string
+	errorMsg: string
 }
 
 export default class Form extends React.Component<FormProps, FormValues> {
@@ -33,6 +40,11 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		this.resetForm = this.resetForm.bind(this)
 		this.createErrorMsg = this.createErrorMsg.bind(this)
 		this.state = {
+			classes: {
+				submitBtn: "",
+				resetBtn: "",
+				errorMsg: ""
+			},
 			formSectionValues: [],
 			formFns: {
 				updateFieldVal: this.updateFieldValue,

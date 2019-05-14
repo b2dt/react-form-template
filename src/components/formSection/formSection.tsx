@@ -13,6 +13,7 @@ export interface FormSectionProps {
 	index?: number
 	formFunctions?: FormFunctions
 	onSectionSubmit?: (flatState: FlatState[]) => any
+	buttonClasses?: string
 }
 
 export default class FormSection extends React.Component<FormSectionProps, any> {
@@ -71,7 +72,7 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 				<h1 className="form-error">{state.formSectionErrorMsg}</h1>
 			)
 		} else
-			return ("")
+			return ""
 	}
 	
 	updateFieldValue(updateObj: UpdateObj) {

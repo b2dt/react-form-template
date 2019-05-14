@@ -74,9 +74,6 @@ export const Convert: any = {
 				</div>
 			)
 		},
-		button: (buttonProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
-			let classes = classNames("field", columnClassName)
-		},
 		dropdown: (dropdownProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames("field", columnClassName)
 		},
