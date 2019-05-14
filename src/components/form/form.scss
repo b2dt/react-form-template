@@ -36,17 +36,31 @@
     width: 70%;
     margin: 20px auto 0 auto;
     opacity: .2;
-
   }
+}
 
-  .button-container {
-    margin: 30px auto;
-    text-align: center;
+.button-container {
+  padding-top: 3px;
+  text-align: center;
 
-    .form-button {
-      width: 150px;
-      display: inline-block;
-      margin: 10px 10px 0 10px;
+  .form-button {
+    width: 150px;
+    display: inline-block;
+    margin: 10px 10px 0 10px;
+  }
+}
+
+.section-button-container {
+  width: 100%;
+  text-align: center;
+  margin: 8px 0;
+
+  .form-button {
+    width: inherit;
+    display: inline-block;
+
+    &.button {
+      padding: 10px 0;
     }
   }
 }

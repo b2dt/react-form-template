@@ -11,7 +11,7 @@ export interface FormProps {
 	columns?: ColumnRange,
 	submissionErrorMsg?: string
 	
-	submitForm: (any) => any
+	onSubmit: (any) => any
 }
 
 export interface FormValues {
@@ -51,7 +51,7 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	resetForm() {
 		const {state} = this
 		let copyState: any[] = [...state.formSectionValues]
-		FormUtil.state.resetProps(state.formSectionValues)
+		FormUtil.state.resetProps(copyState)
 		this.setState({
 			formSectionValues: copyState
 		})
@@ -83,14 +83,12 @@ export default class Form extends React.Component<FormProps, FormValues> {
 			this.setState({
 				formErrorMsg: ""
 			})
-			props.submitForm(flatState)
+			props.onSubmit(flatState)
 		} else {
 			this.setState({
-				formErrorMsg: "Error(s) on Form: " + errors.length + " Errors"
+				formErrorMsg: "Error(s) on Form: " + errors.length + " Error(s)"
 			})
 		}
-		//prop submit of flattened value array
-		
 	}
 	
 	createForm() {

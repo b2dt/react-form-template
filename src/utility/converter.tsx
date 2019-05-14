@@ -1,8 +1,8 @@
 import * as React from "react";
 import {FormFieldProps} from "../models/formFieldProps";
 import {ColumnRange} from "../models/columnRange";
-import classNames from 'classnames'
 import Input from "../components/general/input/input";
+import classNames from 'classnames'
 import * as _ from 'lodash'
 import {FlatState, FormUtil, InputType} from "./formUtil";
 import FormSection, {FormSectionProps} from "../components/formSection/formSection";

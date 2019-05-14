@@ -95,8 +95,8 @@ export default class App extends React.Component<AppPageProps, any> {
 		
 		return (
 			<div id="app">
-				<Form title="NEW CONTAINER FORM" submitForm={this.submitForm}>
-					<FormSection title="Subsection 1 Form" columns={2}>
+				<Form title="NEW CONTAINER FORM" onSubmit={this.submitForm}>
+					<FormSection title="Subsection 1 Form" columns={2} onSectionSubmit={this.submitForm}>
 						<FormSection formFields={formProps2}/>
 						<FormSection formFields={formProps} columns={3}/>
 					</FormSection>

@@ -95,7 +95,7 @@ export const FormUtil: any = {
 				}
 				if (sectProps.formFields != undefined) {
 					sectProps.formFields.map(field => {
-						field.showError = !FormUtil.validate(field, field.defaultText)
+						field.showError = !FormUtil.validate(field)
 					})
 				}
 			})
