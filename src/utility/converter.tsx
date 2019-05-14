@@ -7,7 +7,6 @@ import * as _ from 'lodash'
 import {FlatState, FormUtil, InputType} from "./formUtil";
 import FormSection, {FormSectionProps} from "../components/formSection/formSection";
 import {FormFunctions} from "../components/form/form";
-import {ValidationType} from "./validation";
 import Checkbox, {CheckboxState} from "../components/general/checkbox/checkbox";
 
 export const sortFieldProps = (formFields: FormFieldProps[]) => {
@@ -15,9 +14,13 @@ export const sortFieldProps = (formFields: FormFieldProps[]) => {
 }
 
 export const Convert: any = {
-	formFields: (formFields: FormFieldProps[], numOfColumns: ColumnRange, formFns: FormFunctions) => {
-		let sortedFormFields = sortFieldProps(formFields)
-		return sortedFormFields.map(field => (Convert.convert(field, numOfColumns, formFns)))
+	formFields: {
+		to: {
+			html: (formFields: FormFieldProps[], numOfColumns: ColumnRange, formFns: FormFunctions) => {
+				let sortedFormFields = sortFieldProps(formFields)
+				return sortedFormFields.map(field => (Convert.convert(field, numOfColumns, formFns)))
+			},
+		}
 	},
 	to: {
 		sections: (formSectionProps: FormSectionProps[] | JSX.Element[], formFns: FormFunctions): JSX.Element[] => {
@@ -50,7 +53,6 @@ export const Convert: any = {
 		},
 		input: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames('field', columnClassName, textProps.classes)
-			let required = textProps.validation != undefined && textProps.validation.name == ValidationType.Required
 			return (
 				<div className={classes} key={textProps.id}>
 					<Input
@@ -61,7 +63,7 @@ export const Convert: any = {
 						formFns={formFns}
 						errorMsg={textProps.errorMsg}
 						showError={textProps.showError}
-						required={required}
+						required={textProps.required}
 						validationFn={textProps.validation}
 						inputProps={{
 							type: "text",

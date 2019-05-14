@@ -79,7 +79,10 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		console.log("FlattenedState:", flatState)
 		
 		let errors: FlatState[] = flatState.filter(state => state.error == true)
-		if (errors.length == 0) {
+		if (errors.length == 0 && flatState.length > 0) {
+			this.setState({
+				formErrorMsg: ""
+			})
 			props.submitForm(flatState)
 		} else {
 			this.setState({

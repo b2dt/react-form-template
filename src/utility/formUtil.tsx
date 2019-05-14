@@ -2,6 +2,7 @@ import * as React from 'react'
 import {FormSectionProps} from "../components/formSection/formSection";
 import * as _ from 'lodash'
 import {FormFieldProps} from "../models/formFieldProps";
+import {Derive} from "./dervivationUtil";
 
 export interface UpdateObj {
 	sectionIndices?: number[],
@@ -10,7 +11,7 @@ export interface UpdateObj {
 }
 
 export interface FlatState {
-	value: string,
+	value: any,
 	id: string,
 	error: boolean
 }
@@ -83,7 +84,7 @@ export const FormUtil: any = {
 			} else {
 				let formField: FormFieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
 				formField.defaultText = fieldInfo.newVal
-				formField.showError = !FormUtil.validate(formField, fieldInfo.newVal)
+				formField.showError = !FormUtil.validate(formField)
 				return formField
 			}
 		},
@@ -104,11 +105,13 @@ export const FormUtil: any = {
 			formProps.forEach(props => {
 				if (props.formSectionValues == undefined) {
 					props.formFields.forEach(field => {
-						flatState.push({
-							value: field.defaultText,
-							id: field.id,
-							error: field.showError
-						})
+						if (!(field.defaultText == undefined || field.defaultText.trim() == "") || field.required) {
+							flatState.push({
+								value: Derive.value.from.formField(field),
+								id: field.id,
+								error: field.showError
+							})
+						}
 					})
 				} else {
 					_.merge(flatState, FormUtil.state.flatten(props.formSectionValues))
@@ -132,10 +135,10 @@ export const FormUtil: any = {
 			}
 		},
 	},
-	validate: (formProps: FormFieldProps, newVal: string): boolean => {
+	validate: (formProps: FormFieldProps): boolean => {
 		if (formProps.validation != undefined) {
-			return formProps.validation(newVal)
+			return formProps.validation(formProps.defaultText) && Derive.required.from.formField(formProps)
 		} else
-			return true
+			return Derive.required.from.formField(formProps)
 	}
 }

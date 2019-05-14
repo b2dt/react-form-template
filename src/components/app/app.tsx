@@ -36,7 +36,7 @@ export default class App extends React.Component<AppPageProps, any> {
 				index: 0,
 				id: "rus-first-name",
 				inputType: InputType.INPUT,
-				validation: Validate.required,
+				required: true,
 				placeholder: "BRONTS",
 				label: "First Name"
 			}, {
@@ -58,10 +58,10 @@ export default class App extends React.Component<AppPageProps, any> {
 				label: "Has Dogg"
 			}, {
 				index: 4,
-				id: "doggos-2",
+				id: "birbs",
 				inputType: InputType.CHECKBOX,
 				defaultText: CheckboxState.UNCHECKED,
-				label: "Has Dogg"
+				label: "Has Birb"
 			},
 		]
 		const formProps2: FormFieldProps[] = [
@@ -69,7 +69,7 @@ export default class App extends React.Component<AppPageProps, any> {
 				index: 0,
 				id: "zip",
 				inputType: InputType.INPUT,
-				validation: Validate.zipCodeRequired,
+				validation: Validate.zipCode,
 				errorMsg: "Please enter a Valid Zipcode",
 				label: "Zip"
 			}, {
