@@ -1,5 +1,5 @@
 import * as React from "react";
-import {FormFieldProps} from "../models/formFieldProps";
+import {FieldProps, FormFieldProps} from "../models/formFieldProps";
 import {ColumnRange} from "../models/columnRange";
 import Input from "../components/general/input/input";
 import classNames from 'classnames'
@@ -9,14 +9,21 @@ import FormSection, {FormSectionProps} from "../components/formSection/formSecti
 import {FormFunctions} from "../components/form/form";
 import Checkbox, {CheckboxState} from "../components/general/checkbox/checkbox";
 
-export const sortFieldProps = (formFields: FormFieldProps[]) => {
+export const sortFieldProps = (formFields: FieldProps[]) => {
+	if (new Set(formFields.map(field => field.index)).size !== formFields.length) {
+		let correctlyIndexFormFields = formFields.map((field, index) => {
+			return {...field, index: index}
+		})
+		console.log(correctlyIndexFormFields)
+		return _.sortBy(formFields, (field => field.index))
+	}
 	return _.sortBy(formFields, (field) => field.index)
 }
 
 export const Convert: any = {
 	formFields: {
 		to: {
-			html: (formFields: FormFieldProps[], numOfColumns: ColumnRange, formFns: FormFunctions) => {
+			html: (formFields: FieldProps[], numOfColumns: ColumnRange, formFns: FormFunctions) => {
 				let sortedFormFields = sortFieldProps(formFields)
 				return sortedFormFields.map(field => (Convert.convert(field, numOfColumns, formFns)))
 			},
@@ -36,7 +43,7 @@ export const Convert: any = {
 			})
 			return returnElements
 		},
-		checkbox: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
+		checkbox: (textProps: FieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames("field", columnClassName)
 			let toggled: boolean = textProps.defaultText == CheckboxState.CHECKED
 			return (
@@ -51,7 +58,7 @@ export const Convert: any = {
 				</div>
 			)
 		},
-		input: (textProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
+		input: (textProps: FieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames('field', columnClassName, textProps.classes)
 			return (
 				<div className={classes} key={textProps.id}>
@@ -74,14 +81,24 @@ export const Convert: any = {
 				</div>
 			)
 		},
-		dropdown: (dropdownProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
+		button: (buttonProps: FormFieldProps, onSubmit: () => any) => {
+			let classes = classNames("button form-button", buttonProps.classes)
+			return (
+				<div className={"section-button-container"}>
+					<div className={classes} id={buttonProps.id} key={buttonProps.index}
+							 onClick={onSubmit}>
+						{buttonProps.label}
+					</div>
+				</div>)
+		},
+		dropdown: (dropdownProps: FieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames("field", columnClassName)
 		},
-		textarea: (textAreaProps: FormFieldProps, columnClassName: string, formFns: FormFunctions) => {
+		textarea: (textAreaProps: FieldProps, columnClassName: string, formFns: FormFunctions) => {
 			let classes = classNames("field", columnClassName)
 		}
 	},
-	convert: (formProp: FormFieldProps, numOfColumns: ColumnRange, formFns: FormFunctions) => {
+	convert: (formProp: FieldProps, numOfColumns: ColumnRange, formFns: FormFunctions) => {
 		let columnClassName = classNames({"col-one": numOfColumns == ColumnRange.ONE}, {"col-two": numOfColumns == ColumnRange.TWO}, {"col-three": numOfColumns == ColumnRange.THREE})
 		if (formProp.inputType == InputType.INPUT)
 			return Convert.to.input(formProp, columnClassName, formFns)

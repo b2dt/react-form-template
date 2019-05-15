@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {FormSectionProps} from "../components/formSection/formSection";
 import * as _ from 'lodash'
-import {FormFieldProps} from "../models/formFieldProps";
+import {FieldProps} from "../models/formFieldProps";
 import {Derive} from "./dervivationUtil";
 
 export interface UpdateObj {
@@ -78,11 +78,10 @@ export const FormUtil: any = {
 			let currIndex = fieldInfo.sectionIndices[0]
 			fieldInfo.sectionIndices.splice(0, 1)
 			let newSectionProps = sectionProps[currIndex]
-			
-			if (newSectionProps.formSectionValues != undefined) {
+			if (newSectionProps.formSectionValues != undefined && fieldInfo.sectionIndices.length != 0) {
 				FormUtil.state.updateValue(fieldInfo, newSectionProps.formSectionValues)
 			} else {
-				let formField: FormFieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
+				let formField: FieldProps = newSectionProps.formFields[fieldInfo.fieldIndex]
 				formField.defaultText = fieldInfo.newVal
 				formField.showError = !FormUtil.validate(formField)
 				return formField
@@ -135,7 +134,7 @@ export const FormUtil: any = {
 			}
 		},
 	},
-	validate: (formProps: FormFieldProps): boolean => {
+	validate: (formProps: FieldProps): boolean => {
 		if (formProps.validation != undefined) {
 			return formProps.validation(formProps.defaultText) && Derive.required.from.formField(formProps)
 		} else

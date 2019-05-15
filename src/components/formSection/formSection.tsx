@@ -1,19 +1,19 @@
 import * as React from 'react'
-import {FormFieldProps} from "../../models/formFieldProps";
+import {FieldProps, FormFieldProps} from "../../models/formFieldProps";
 import {ColumnRange} from "../../models/columnRange";
-import {FlatState, FormUtil, UpdateObj} from "../../utility/formUtil";
+import {FlatState, FormUtil, InputType, UpdateObj} from "../../utility/formUtil";
 import {Convert} from "../../utility/converter";
 import {FormFunctions} from "../form/form";
 
 export interface FormSectionProps {
-	formFields?: FormFieldProps[]
+	formFields?: FieldProps[]
 	formSectionValues?: FormSectionProps[] | JSX.Element[]
 	title?: string
 	columns?: ColumnRange
 	index?: number
 	formFunctions?: FormFunctions
+	submitBtn?: JSX.Element | FormFieldProps
 	onSectionSubmit?: (flatState: FlatState[]) => any
-	buttonClasses?: string
 }
 
 export default class FormSection extends React.Component<FormSectionProps, any> {
@@ -31,15 +31,17 @@ export default class FormSection extends React.Component<FormSectionProps, any> 
 	createSectionSubmitButton() {
 		const {props} = this
 		if (props.onSectionSubmit != undefined) {
-			return (
-				<div className={"section-button-container"}>
-					<div className={"button form-button"}
-							 onClick={this.sectionSubmit}>
-						Submit
-					</div>
-				</div>
-			)
-		}
+			if (props.submitBtn == undefined) {
+				let fieldProps: FormFieldProps = {
+					id: "form-submit-button",
+					inputType: InputType.BUTTON,
+					index: -1,
+					label: "Submit"
+				}
+				return Convert.to.button(fieldProps, this.sectionSubmit)
+			} else
+				return props.submitBtn
+		} else return ""
 	}
 	
 	sectionSubmit() {

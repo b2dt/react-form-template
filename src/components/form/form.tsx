@@ -1,24 +1,25 @@
 import * as React from 'react';
-import {FormFieldProps} from '../../models/formFieldProps';
+import {FieldProps} from '../../models/formFieldProps';
 import {ColumnRange} from "../../models/columnRange";
 import {FormSectionProps} from "../formSection/formSection";
 import {FlatState, FormUtil, UpdateObj} from "../../utility/formUtil";
 import {Convert} from "../../utility/converter";
+import classNames from 'classnames'
 
 export interface FormProps {
 	title: string
-	formFields?: FormFieldProps[]
+	onSubmit: (any) => any
+	
+	formFields?: FieldProps[]
 	columns?: ColumnRange,
 	submissionErrorMsg?: string
-	
-	onSubmit: (any) => any
+	classes?: StyleClasses
 }
 
 export interface FormValues {
 	formSectionValues?: FormSectionProps[] | JSX.Element[]
 	formFns: FormFunctions,
 	formErrorMsg: string
-	classes: StyleClasses
 }
 
 export interface FormFunctions {
@@ -40,11 +41,6 @@ export default class Form extends React.Component<FormProps, FormValues> {
 		this.resetForm = this.resetForm.bind(this)
 		this.createErrorMsg = this.createErrorMsg.bind(this)
 		this.state = {
-			classes: {
-				submitBtn: "",
-				resetBtn: "",
-				errorMsg: ""
-			},
 			formSectionValues: [],
 			formFns: {
 				updateFieldVal: this.updateFieldValue,
@@ -72,7 +68,7 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	updateFieldValue(updateObj: UpdateObj) {
 		const {state} = this
 		let copyState: any[] = [...state.formSectionValues]
-		FormUtil.state.updateValue(updateObj, state.formSectionValues)
+		FormUtil.state.updateValue(updateObj, copyState)
 		this.setState({
 			formSectionValues: copyState
 		})
@@ -114,13 +110,19 @@ export default class Form extends React.Component<FormProps, FormValues> {
 	}
 	
 	createButtons() {
+		const {props} = this
+		let customSubmitBtnClasses = props.classes != undefined ? props.classes.submitBtn : "",
+			customResetBtnClasses = props.classes != undefined ? props.classes.resetBtn : ""
+		let submitBtnClasses = classNames("button", "form-button", customSubmitBtnClasses),
+			resetBtnClasses = classNames("button", "form-button", customResetBtnClasses)
+		
 		return (
 			<div className={"button-container"}>
-				<div className={"button form-button"}
+				<div className={submitBtnClasses}
 						 onClick={this.submitLocalForm}>
 					Submit
 				</div>
-				<div className={"button form-button"}
+				<div className={resetBtnClasses}
 						 onClick={this.resetForm}>
 					Reset Form
 				</div>
@@ -147,7 +149,6 @@ export default class Form extends React.Component<FormProps, FormValues> {
 			<div className={'form-container'}>
 				<div className={'form-title'}>{props.title}</div>
 				{formFields}
-				<div className={"button-container-separator"}/>
 				{buttons}
 				{errorMsg}
 			</div>
